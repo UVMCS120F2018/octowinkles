@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "Graphics.h"
 
 GLdouble width, height;
 int wd;
