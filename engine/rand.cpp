@@ -4,7 +4,7 @@
 
 #include <cstdlib>
 #include <ctime>
-#include "rand_num.h"
+#include "rand.h"
 
 int RandNum::getInt(int bounds) {
     return rand() % bounds;

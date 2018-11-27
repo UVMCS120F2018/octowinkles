@@ -11,7 +11,7 @@
  */
 #include <math.h>
 #include <iostream>
-#include "rand_num.h"
+#include "rand.h"
 
 namespace colorGraphics {
     // RGB Color is a struct for a standard color

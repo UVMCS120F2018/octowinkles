@@ -7,6 +7,7 @@
 
 #include <string>
 #include <functional>
+#include "graphics_imports.h"
 
 struct color {
     double red;

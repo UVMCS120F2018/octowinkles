@@ -3,7 +3,7 @@
 //
 
 #include "button.h"
-#include "graphical_display.h"
+#include "graphics_imports.h"
 using namespace std;
 
 /********** Quad *************/

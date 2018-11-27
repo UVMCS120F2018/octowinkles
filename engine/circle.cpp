@@ -6,7 +6,7 @@
 #include <iostream>
 #include "circle.h"
 #include "graphics_imports.h"
-#include "rand_num.h"
+#include "rand.h"
 
 Circle::Circle(int r, position2D::Vector2D center, colorGraphics::RGBColor color): Shape2D(center, color) {
     radius = r;
