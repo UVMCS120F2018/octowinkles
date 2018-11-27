@@ -1,4 +1,4 @@
-# attack of the periwinkles
+# Attack of the periwinkles
 
 ### Classes
 * Octopus -- Hank --- He should be red
