@@ -1,4 +1,6 @@
-#include "graphics.h"
+#include "Graphics.h"
+#include "engine/button.h"
+#include <string>
 
 GLdouble width, height;
 int wd;
@@ -7,6 +9,16 @@ void init() {
     width = 500;
     height = 500;
 }
+
+enum screen { START, MAIN, END, };
+screen currentScreen = START;
+
+
+/* BUTTONS */
+Button startButton(Quad({0.17,0.88,0.55}, {250, 310}, 250, 50), "PLAY");
+Button quitButton(Quad({1,0.32,0.32}, {250, 370}, 250, 50), "QUIT");
+
+
 
 /* Initialize OpenGL Graphics */
 void initGL() {
@@ -33,6 +45,22 @@ void display() {
     /*
      * Draw here
      */
+
+    switch(currentScreen) {    // Switch controls which screen draw method is displayed
+        case START:
+            displayScreenStart();
+            break;
+
+        case MAIN:
+            displayScreenMain();
+            break;
+
+        case END:
+            displayScreenEnd();
+            break;
+
+        default:break;
+    }
 
     glFlush();  // Render now
 }
@@ -70,15 +98,70 @@ void kbdS(int key, int x, int y) {
 
 void cursor(int x, int y) {
 
+    switch(currentScreen) {
+        case START:
 
+            // Mousing over startButton
+            if (startButton.isOverlapping(x, y)) { startButton.hover(); }
+            else { startButton.release(); }
+
+            // Mousing over quitButton
+            if (quitButton.isOverlapping(x, y)) { quitButton.hover(); }
+            else { quitButton.release(); }
+
+            break;
+
+        case MAIN:
+            break;
+
+        case END:
+            break;
+
+        default:break;
+    }
     glutPostRedisplay();
 }
 
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
+    switch(currentScreen) {
+        case START:
 
+            // Start button handler
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && startButton.isOverlapping(x, y)) {
+                startButton.pressDown();
+            } else {
+                startButton.release();
+            }
+            // Sends user to main screen which begins a game
+            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && startButton.isOverlapping(x, y)) {
+                startButton.click(moveToMain);
+            }
 
+            // Quit button handler
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && quitButton.isOverlapping(x, y)) {
+                quitButton.pressDown();
+            } else {
+                quitButton.release();
+            }
+            // Calls the game quit handler
+            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && quitButton.isOverlapping(x, y)) {
+                quitButton.click(quitGame);
+            }
+
+            break;
+
+        case MAIN:
+
+            break;
+
+        case END:
+
+            break;
+
+        default:break;
+    }
 
     glutPostRedisplay();
 }
@@ -98,10 +181,10 @@ int main(int argc, char** argv) {
 
     glutInitDisplayMode(GLUT_RGBA);
 
-    glutInitWindowSize((int)width, (int)height);
+    glutInitWindowSize((int) width, (int) height);
     glutInitWindowPosition(100, 200); // Position the window's initial top-left corner
     /* create the window and store the handle to it */
-    wd = glutCreateWindow("Fun with Drawing!" /* title */ );
+    wd = glutCreateWindow("Attack of the Perriwinkles");
 
     // Register callback handler for window re-paint event
     glutDisplayFunc(display);
@@ -128,4 +211,78 @@ int main(int argc, char** argv) {
     // Enter the event-processing loop
     glutMainLoop();
     return 0;
+}
+
+
+
+/* Screen Handleres  */
+
+
+void displayScreenStart(){
+    displayText(width/2,100,255,0,255, "Attack of the perriwinkles");
+    startButton.draw();
+    quitButton.draw();
+
+}
+
+void displayScreenEnd(){
+    displayText(width/2,100,255,0,255, "You got to the end ");
+}
+
+void displayScreenMain(){
+    displayText(width/2,100,255,0,255, "Main Game...");
+}
+
+/**
+ * Change to the Start screen and reset animation variables
+*/
+void moveToStart() {
+    glClearColor(1.0f,1.0f,1.0f,1.0f); // white and opaque
+    currentScreen = START;
+}
+
+/**
+ * Change screen to Main
+ * Changes the clear color to game background
+ * Resets the turn to X and resets the pieces
+*/
+void moveToMain() {
+    glClearColor(0.4f,0.7f,0.8f,1.0f);
+    currentScreen = MAIN;
+}
+
+/**
+ * Change screen to End
+*/
+void moveToEnd() {
+    currentScreen = END;
+}
+
+
+
+/* HELPER FUNCTIONS */
+
+/**
+ * This function helps creating colored text
+ * @param x the x position
+ * @param y the y position
+ * @param r the red value
+ * @param g the green value
+ * @param b the blue value
+ * @param string te string to display
+ */
+void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, const char *string) {
+    glColor3f(r,g,b);
+    glRasterPos2f(x,y);
+    for (int i = 0; i < std::strlen(string); i++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, string[i] );
+    }
+}
+
+/**
+ * Calls closeGame, which terminates the window
+ */
+void quitGame() {
+    glutDestroyWindow(wd);
+    exit(0);
 }
