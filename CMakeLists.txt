@@ -22,14 +22,16 @@ elseif (APPLE)
 endif ()
 
 file(GLOB SOURCE_FILES
+        engine/*.cpp
+        engine/*.h
         *.cpp
         *.h
         )
 
-add_executable(main.cpp ${SOURCE_FILES})
+add_executable(octowinkles ${SOURCE_FILES})
 
 if (WIN32)
-    target_link_libraries (main.cpp ${OPENGL_LIBRARIES} freeglut)
+    target_link_libraries (octowinkles ${OPENGL_LIBRARIES} freeglut)
 elseif (APPLE)
-    target_link_libraries (main.cpp ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
+    target_link_libraries (octowinkles ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
 endif ()
