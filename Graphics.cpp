@@ -6,8 +6,8 @@ GLdouble width, height;
 int wd;
 
 void init() {
-    width = 500;
-    height = 500;
+    width = 960;
+    height = 720;
 }
 
 enum screen { START, MAIN, END, };
@@ -15,8 +15,9 @@ screen currentScreen = START;
 
 
 /* BUTTONS */
-Button startButton(Quad({0.17,0.88,0.55}, {250, 310}, 250, 50), "PLAY");
-Button quitButton(Quad({1,0.32,0.32}, {250, 370}, 250, 50), "QUIT");
+Button startButton(Quad({0.17,0.88,0.55}, {480, 340}, 300, 75), "PLAY");
+Button quitButton(Quad({1,0.32,0.32}, {480, 420}, 300, 75), "QUIT");
+Button backButton(Quad({0,0,1}, {65, 50}, 80, 50), "< BACK");
 
 
 
@@ -73,6 +74,9 @@ void kbd(unsigned char key, int x, int y)
         glutDestroyWindow(wd);
         exit(0);
     }
+    if (key == 97 ) {
+        moveToEnd();
+    }
 
     glutPostRedisplay();
 }
@@ -115,6 +119,11 @@ void cursor(int x, int y) {
             break;
 
         case END:
+            // Mousing over backButton
+            if (backButton.isOverlapping(x, y)) { backButton.hover();
+            } else { backButton.release(); }
+
+
             break;
 
         default:break;
@@ -129,26 +138,19 @@ void mouse(int button, int state, int x, int y) {
         case START:
 
             // Start button handler
-            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && startButton.isOverlapping(x, y)) {
-                startButton.pressDown();
-            } else {
-                startButton.release();
-            }
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && startButton.isOverlapping(x, y)) { startButton.pressDown();
+            } else { startButton.release(); }
+
             // Sends user to main screen which begins a game
-            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && startButton.isOverlapping(x, y)) {
-                startButton.click(moveToMain);
-            }
+            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && startButton.isOverlapping(x, y)) { startButton.click(moveToMain); }
+
 
             // Quit button handler
-            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && quitButton.isOverlapping(x, y)) {
-                quitButton.pressDown();
-            } else {
-                quitButton.release();
-            }
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && quitButton.isOverlapping(x, y)) { quitButton.pressDown();
+            } else { quitButton.release(); }
+
             // Calls the game quit handler
-            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && quitButton.isOverlapping(x, y)) {
-                quitButton.click(quitGame);
-            }
+            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && quitButton.isOverlapping(x, y)) { quitButton.click(quitGame); }
 
             break;
 
@@ -157,6 +159,13 @@ void mouse(int button, int state, int x, int y) {
             break;
 
         case END:
+
+            // Back button handler
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && backButton.isOverlapping(x, y)) { backButton.pressDown(); }
+            else { backButton.release(); }
+
+            // Move to the Start screen
+            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && backButton.isOverlapping(x, y)) { backButton.click(moveToStart); }
 
             break;
 
@@ -219,14 +228,15 @@ int main(int argc, char** argv) {
 
 
 void displayScreenStart(){
-    displayText(width/2,100,255,0,255, "Attack of the perriwinkles");
+    displayText(width/2-100,100,1,0,1, "Attack of the perriwinkles");
     startButton.draw();
     quitButton.draw();
 
 }
 
 void displayScreenEnd(){
-    displayText(width/2,100,255,0,255, "You got to the end ");
+    displayText(width/2,100,1,0,1, "You got to the end ");
+    backButton.draw();
 }
 
 void displayScreenMain(){
