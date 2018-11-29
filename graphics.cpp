@@ -1,4 +1,4 @@
-#include "Graphics.h"
+#include "graphics.h"
 #include "engine/button.h"
 #include <string>
 
