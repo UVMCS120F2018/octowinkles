@@ -17,3 +17,17 @@ sea bottom the game is over and hank must find a new place to live.
 * Cecily Page
 * Megan Doyle 
 * Hunter Jensen
+
+
+
+
+
+
+
+
+
+
+### what do do....
+Object of the game is to ink the most of the perriwinkles.
+The perriwinkes will move down exactly the height of 1 perriwink at a set fun rate
+for every 10 perriwinkes you ink the drop rate will increase and get faster.
