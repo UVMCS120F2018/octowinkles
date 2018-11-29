@@ -41,4 +41,22 @@ void timer(int dummy);
 // Handle mouse button pressed and released events
 void mouse(int button, int state, int x, int y);
 
+void displayScreenStart();
+
+void displayScreenEnd();
+
+void displayScreenMain();
+
+void moveToStart();
+
+void moveToMain();
+
+void moveToEnd();
+
+void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, const char *string);
+
+void quitGame();
+
+
+
 #endif /* graphics_h */
