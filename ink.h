@@ -16,9 +16,9 @@ using namespace std;
 class Ink : public Entity {
 
 private:
-    position2D::Vector2D position;
     colorGraphics::RGBColor inkColor;
     vector<Circle> splatters;
+    position2D::Vector2D position;
 
 public:
 
