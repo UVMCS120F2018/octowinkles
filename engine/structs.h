@@ -28,9 +28,9 @@ namespace colorGraphics {
 
         // RGB Constructor that takes ints (0-255) as rgb values, and converts them to doubles
         RGBColor(int red, int green, int blue) {
-            r = red / 255.;
-            g = green / 255.;
-            b = blue / 255.;
+            r = red / 255.0;
+            g = green / 255.0;
+            b = blue / 255.0;
         }
 
 

@@ -5,27 +5,37 @@
 #include "hank.h"
 #include <string>
 
+
+/* WINDOW STUFF */
+enum screen { START, MAIN, END, };
 GLdouble width, height;
 int wd;
-
-void init() {
-    width = 960;
-    height = 720;
-}
-
-enum screen { START, MAIN, END, };
 screen currentScreen = START;
-
 
 /* BUTTONS */
 Button startButton(Quad({0.17,0.88,0.55}, {480, 340}, 300, 75), "PLAY");
 Button quitButton(Quad({1,0.32,0.32}, {480, 420}, 300, 75), "QUIT");
 Button backButton(Quad({0,0,1}, {65, 50}, 80, 50), "< BACK");
+
+
+/* ITEMS */
 Ink testink(position2D::Vector2D{100,100,0});
-Hank testHank(position2D::Vector2D{480, 670,0});
-double x=100,y=100;
+Hank hank(position2D::Vector2D{480, 670,0});
+Hank papaHank(position2D::Vector2D{200, 200,0});
+vector<Periwinkle> periwinkles;
 
 
+
+
+
+
+void init() {
+    width = 960;
+    height = 720;
+
+
+    addRow();
+}
 /* Initialize OpenGL Graphics */
 void initGL() {
     // Set "clearing" or background color
@@ -92,11 +102,11 @@ void kbdS(int key, int x, int y) {
 
             break;
         case GLUT_KEY_LEFT:
-            testHank.moveLeft(10);
+            hank.moveLeft(10);
 
             break;
         case GLUT_KEY_RIGHT:
-            testHank.moveRight(10);
+            hank.moveRight(10);
 
             break;
         case GLUT_KEY_UP:
@@ -238,6 +248,7 @@ void displayScreenStart(){
     displayText(width/2-100,100,1,0,1, "Attack of the Periwinkles");
     startButton.draw();
     quitButton.draw();
+    papaHank.draw();
 
 }
 
@@ -247,15 +258,13 @@ void displayScreenEnd(){
 }
 
 void displayScreenMain(){
-    displayText(width/2,100,255,0,255, "Main Game...");
-    Periwinkle p(17, position2D::Vector2D(50, 50), colorGraphics::GREEN);
-    p.draw();
 
-
-    y++;
-    testink.translate(position2D::Vector2D{x,y,0});
     testink.draw();
-    testHank.draw();
+    for (auto &periwinkle : periwinkles) {
+        periwinkle.draw();
+    }
+
+    hank.draw();
 
 }
 
@@ -311,4 +320,23 @@ void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, const cha
 void quitGame() {
     glutDestroyWindow(wd);
     exit(0);
+}
+
+/**
+ * Adds a row of perriwinkles
+ */
+void addRow(){
+
+
+
+    double size = 18.0;
+    double spacing = 96.0;
+    double startY = size+5;
+    colorGraphics::RGBColor color{1.0,0.0,0.0};
+
+    for (double i = 20; i <width ; i+=spacing) {
+        periwinkles.emplace_back(size,position2D::Vector2D{i+20,startY,0},color);
+    }
+
+
 }

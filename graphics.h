@@ -57,6 +57,8 @@ void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, const cha
 
 void quitGame();
 
+void addRow();
+
 
 
 #endif /* graphics_h */
