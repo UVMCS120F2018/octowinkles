@@ -23,6 +23,10 @@ Button backButton(Quad({0,0,1}, {65, 50}, 80, 50), "< BACK");
 Hank hank(position2D::Vector2D{480, 660,0});
 Hank papaHank(position2D::Vector2D{200, 200,0}); // This is start screen hank
 vector<Periwinkle> periwinkles;
+vector<Ink> inks;
+
+
+
 
 void init() {
     width = 960;
@@ -84,8 +88,9 @@ void kbd(unsigned char key, int x, int y)
         glutDestroyWindow(wd);
         exit(0);
     }
-    if (key == 97 ) {
-        moveToEnd();
+    if (key == 32) {
+        inks.emplace_back(hank.position);
+        cout << "space" << endl;
     }
 
     glutPostRedisplay();
@@ -263,13 +268,19 @@ void displayScreenMain(){
         }
     }
 
+
     hank.draw();
 
 //    moveDown(0);
     //addRow();
 
-
-
+    for(int i = 0; i<inks.size() ; i++){
+        inks[i].draw();
+        inks[i].translate(position2D::Vector2D{0.0,-2.0});
+        if(inks[i].getCenter().y == 0) {
+            inks.erase(inks.begin() + i);
+        }
+    }
 }
 
 /**

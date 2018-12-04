@@ -15,14 +15,6 @@ Ink::Ink(position2D::Vector2D point): Entity(point), position(point.x, point.y),
 }
 
 void Ink::draw() {
-    for(int i = 0; i < 15; i++){
-        int rad = rand() % 4;
-        position2D::Vector2D edge = splatters[0].getPointOnEdge();
-        splatters.emplace_back(rad, edge, inkColor);
-
-    }
-
-
     for (auto &splatter : splatters) {
         splatter.draw();
     }
@@ -33,7 +25,11 @@ void Ink::translate(position2D::Vector2D v) {
     double x = v.x;
     double y = v.y;
     for (auto &splatter : splatters) {
-        splatter.setPosition(v);
+        position2D::Vector2D c = splatter.getCenter();
+        double nx = c.x + x;
+        double ny = c.y + y;
+
+        splatter.setPosition({nx, ny, v.rotationAngle});
     }
 }
 
