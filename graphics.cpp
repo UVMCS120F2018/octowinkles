@@ -19,9 +19,8 @@ Button backButton(Quad({0,0,1}, {65, 50}, 80, 50), "< BACK");
 
 
 /* ITEMS */
-Ink testink(position2D::Vector2D{100,100,0});
-Hank hank(position2D::Vector2D{480, 670,0});
-Hank papaHank(position2D::Vector2D{200, 200,0});
+Hank hank(position2D::Vector2D{480, 660,0});
+Hank papaHank(position2D::Vector2D{200, 200,0}); // This is start screen hank
 vector<Periwinkle> periwinkles;
 
 
@@ -245,6 +244,7 @@ int main(int argc, char** argv) {
 
 
 void displayScreenStart(){
+
     displayText(width/2-100,100,1,0,1, "Attack of the Periwinkles");
     startButton.draw();
     quitButton.draw();
@@ -259,12 +259,17 @@ void displayScreenEnd(){
 
 void displayScreenMain(){
 
-    testink.draw();
     for (auto &periwinkle : periwinkles) {
         periwinkle.draw();
+        if(periwinkle.getCenter().y == 610) {
+            moveToEnd();
+        }
     }
 
     hank.draw();
+
+    moveDown();
+    //addRow();
 
 }
 
@@ -327,8 +332,6 @@ void quitGame() {
  */
 void addRow(){
 
-
-
     double size = 18.0;
     double spacing = 96.0;
     double startY = size+5;
@@ -339,4 +342,11 @@ void addRow(){
     }
 
 
+}
+
+void moveDown(){
+
+    for (auto &periwinkle : periwinkles) {
+        periwinkle.translate(position2D::Vector2D{0,1});
+    }
 }

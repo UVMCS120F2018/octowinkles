@@ -59,6 +59,7 @@ void quitGame();
 
 void addRow();
 
+void moveDown();
 
 
 #endif /* graphics_h */
