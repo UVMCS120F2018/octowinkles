@@ -29,8 +29,10 @@ void Ink::translate(position2D::Vector2D v) {
         double nx = c.x + x;
         double ny = c.y + y;
 
-        splatter.setPosition({nx, ny, v.rotationAngle});
+        splatter.setPosition(position2D::Vector2D(nx, ny, v.rotationAngle));
     }
+    Entity::translate(v);
+
 }
 
 void Ink::update() {

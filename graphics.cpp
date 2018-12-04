@@ -273,8 +273,8 @@ void displayScreenMain(){
     for(int i = 0; i<inks.size() ; i++){
         inks[i].draw();
         inks[i].translate(position2D::Vector2D{0.0,-5.0});
-        if(inks[i].getCenter().y == 0) {
-            //TODO: Not removing for some reason!!!!!!!!!!!!!!!
+
+        if(inks[i].getCenter().y <= 0) {
             inks.erase(inks.begin() + i);
         }
     }
