@@ -29,10 +29,8 @@ void Hank::draw(){
 
     pupilLeft.draw();
     pupilRight.draw();
-    }
-void Hank::setPosition(position2D::Vector2D point) {
-
 }
+
 void Hank::moveRight(double dist){
     if(position.x<910){
         position = {position.x+dist, position.y, position.rotationAngle};

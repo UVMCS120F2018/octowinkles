@@ -25,13 +25,17 @@ Hank papaHank(position2D::Vector2D{200, 200,0}); // This is start screen hank
 vector<Periwinkle> periwinkles;
 vector<Ink> inks;
 
-
+/* STATIC ITEMS */
+vector<double> xPlacements; //the parriwinkle placements
 
 
 void init() {
     width = 960;
     height = 720;
 
+    // This sets the placements of the perriwinkles
+    int spacing = 50;
+    for (double i = spacing; i < width; i+=width/9) { xPlacements.push_back(i); }
 
 
 }
@@ -101,11 +105,11 @@ void kbdS(int key, int x, int y) {
 
             break;
         case GLUT_KEY_LEFT:
-            hank.moveLeft(10);
+            hank.moveLeft(15);
 
             break;
         case GLUT_KEY_RIGHT:
-            hank.moveRight(10);
+            hank.moveRight(15);
 
             break;
         case GLUT_KEY_UP:
@@ -251,14 +255,13 @@ void displayScreenStart(){
 }
 
 void displayScreenEnd(){
-    displayText(width/2,100,1,0,1, "You got to the end ");
+    displayText(width/2,100,1,0,1, "Your score: " + to_string(scoreCounter));
     backButton.draw();
 }
 
 void displayScreenMain(){
 
-    displayText(width-200,20,0,0,0, "Score: ");
-    displayText(width-125,20,0,0,0, to_string(scoreCounter));
+    displayText(width-125,20,0,0,0, "Score:" + to_string(scoreCounter));
 
     for (auto &periwinkle : periwinkles) {
         periwinkle.draw();
@@ -310,9 +313,11 @@ void moveToMain() {
 
     currentScreen = MAIN;
 
-    addRow();
+    addRow(3);
     glutTimerFunc(500, moveDown, 50*14);
     glutTimerFunc(7000, spawnRow, 50);
+
+
 }
 
 /**
@@ -353,17 +358,36 @@ void quitGame() {
 
 /**
  * Adds a row of periwinkles
+ * @param number the number of winkles to add to the row
  */
-void addRow(){
+void addRow(int number){
 
-    double size = 18.0;
-    int spacing = 96;
+    double size = 25.0;
+    int spacing = 50;
     double startY = size+5;
     colorGraphics::RGBColor color{1.0,0.0,0.0};
 
-    for (int i = 20; i <width ; i+=spacing) {
-        periwinkles.emplace_back(size,position2D::Vector2D{i+20.,startY,0},color);
+
+    vector<bool> placements = {false,false,false,false,false,false,false,false,false}; // 9 places to place the winkles
+
+
+    // Randomly switch the placements to true
+    int done = 0;
+    while(done != number){
+        int place = rand() % 9;
+        if(!placements[place]){
+            placements[place] = true;
+            ++done;
+        }
     }
+
+    // Draw the winkles
+    for (int i = 0; i < placements.size(); ++i) {
+        if(placements[i]) { periwinkles.emplace_back(size,position2D::Vector2D{xPlacements[i], startY,0},color); }
+    }
+
+
+
 
 
 }
@@ -383,7 +407,7 @@ void spawnRow(int time) {
         waitTime = 1500;
     }
 
-    addRow();
+    addRow(3);
 
     glutTimerFunc(waitTime, spawnRow, time);
 }
@@ -416,5 +440,7 @@ void resetGame() {
     periwinkles.clear();
     scoreCounter = 0;
     inks.clear();
+    hank.setPosition(position2D::Vector2D{480, 660,0});
+
 }
 

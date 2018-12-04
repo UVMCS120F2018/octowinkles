@@ -59,7 +59,7 @@ void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, std::stri
 
 void quitGame();
 
-void addRow();
+void addRow(int number);
 
 void moveDown(int time);
 
