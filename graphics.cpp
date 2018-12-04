@@ -263,7 +263,8 @@ void displayScreenMain(){
 
     for (auto &periwinkle : periwinkles) {
         periwinkle.draw();
-        if(periwinkle.getCenter().y == 610) { // Handles game end (if a periwinkle gets to the bottom)
+        if(periwinkle.getCenter().y >= 610) { // Handles game end (if a periwinkle gets to the bottom)
+            cout << periwinkle.getCenter().y;
             moveToEnd();
         }
     }
@@ -271,13 +272,11 @@ void displayScreenMain(){
 
     hank.draw();
 
-//    moveDown(0);
-    //addRow();
-
     for(int i = 0; i<inks.size() ; i++){
         inks[i].draw();
         inks[i].translate(position2D::Vector2D{0.0,-2.0});
         if(inks[i].getCenter().y == 0) {
+            //TODO: Not removing for some reason!!!!!!!!!!!!!!!
             inks.erase(inks.begin() + i);
         }
     }
