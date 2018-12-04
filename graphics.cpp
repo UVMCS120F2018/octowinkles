@@ -2,6 +2,7 @@
 #include "engine/button.h"
 #include "ink.h"
 #include "periwinkle.h"
+#include "hank.h"
 #include <string>
 
 GLdouble width, height;
@@ -21,6 +22,7 @@ Button startButton(Quad({0.17,0.88,0.55}, {480, 340}, 300, 75), "PLAY");
 Button quitButton(Quad({1,0.32,0.32}, {480, 420}, 300, 75), "QUIT");
 Button backButton(Quad({0,0,1}, {65, 50}, 80, 50), "< BACK");
 Ink testink(position2D::Vector2D{100,100,0});
+Hank testHank(position2D::Vector2D{0,0,0});
 double x=100,y=100;
 
 
@@ -250,6 +252,8 @@ void displayScreenMain(){
     testink.draw();
     y++;
     testink.translate(position2D::Vector2D{x,y,0});
+
+    testHank.draw();
 
 }
 

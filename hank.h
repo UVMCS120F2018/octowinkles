@@ -9,7 +9,7 @@ using namespace std;
 #ifndef OCTOWINKLE_HANK_H
 #define OCTOWINKLE_HANK_H
 class Hank: public Entity{
-    public:
+public:
     position2D::Vector2D position;
     colorGraphics::RGBColor eyeColor;
     colorGraphics::RGBColor hankColor;

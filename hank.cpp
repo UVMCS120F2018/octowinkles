@@ -4,7 +4,7 @@
 
 #include "hank.h"
 
-Hank::Hank(position2D::Vector2D point):Entity(point), position(point.x, point.y), hankColor({1, 0, 0}), pupilColor({0,0,0}), eyeColor({1,1,1}) {
+Hank::Hank(position2D::Vector2D point):Entity(point), position(point.x, point.y), hankColor({1., 0., 0.}), pupilColor({0.,0.,0.}), eyeColor({1.,1.,1.}) {
 
 }
 void Hank::draw(){
