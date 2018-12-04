@@ -1,6 +1,7 @@
 #include "graphics.h"
 #include "engine/button.h"
 #include "ink.h"
+#include "periwinkle.h"
 #include <string>
 
 GLdouble width, height;
@@ -195,7 +196,7 @@ int main(int argc, char** argv) {
     glutInitWindowSize((int) width, (int) height);
     glutInitWindowPosition(100, 200); // Position the window's initial top-left corner
     /* create the window and store the handle to it */
-    wd = glutCreateWindow("Attack of the Perriwinkles");
+    wd = glutCreateWindow("Attack of the Periwinkles");
 
     // Register callback handler for window re-paint event
     glutDisplayFunc(display);
@@ -230,7 +231,7 @@ int main(int argc, char** argv) {
 
 
 void displayScreenStart(){
-    displayText(width/2-100,100,1,0,1, "Attack of the perriwinkles");
+    displayText(width/2-100,100,1,0,1, "Attack of the Periwinkles");
     startButton.draw();
     quitButton.draw();
 
@@ -243,6 +244,8 @@ void displayScreenEnd(){
 
 void displayScreenMain(){
     displayText(width/2,100,255,0,255, "Main Game...");
+    Periwinkle p(17, position2D::Vector2D(50, 50), colorGraphics::GREEN);
+    p.draw();
 
     testink.draw();
     y++;
