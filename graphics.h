@@ -62,7 +62,9 @@ void quitGame();
 
 void addRow();
 
-void moveDown();
+void moveDown(int time);
+
+void spawnRow(int time);
 
 
 #endif /* graphics_h */

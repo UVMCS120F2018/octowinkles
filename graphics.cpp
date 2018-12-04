@@ -33,9 +33,6 @@ int getScore(){
 void init() {
     width = 960;
     height = 720;
-
-
-    addRow();
 }
 /* Initialize OpenGL Graphics */
 void initGL() {
@@ -272,7 +269,7 @@ void displayScreenMain(){
 
     hank.draw();
 
-    moveDown();
+//    moveDown(0);
     //addRow();
 
 
@@ -295,6 +292,10 @@ void moveToStart() {
 void moveToMain() {
     glClearColor(0.4f,0.7f,0.8f,1.0f);
     currentScreen = MAIN;
+
+    addRow();
+    glutTimerFunc(500, moveDown, 50*14);
+    glutTimerFunc(7000, spawnRow, 50);
 }
 
 /**
@@ -303,7 +304,6 @@ void moveToMain() {
 void moveToEnd() {
     currentScreen = END;
 }
-
 
 
 /* HELPER FUNCTIONS */
@@ -334,25 +334,59 @@ void quitGame() {
 }
 
 /**
- * Adds a row of perriwinkles
+ * Adds a row of periwinkles
  */
 void addRow(){
 
     double size = 18.0;
-    double spacing = 96.0;
+    int spacing = 96;
     double startY = size+5;
     colorGraphics::RGBColor color{1.0,0.0,0.0};
 
-    for (double i = 20; i <width ; i+=spacing) {
-        periwinkles.emplace_back(size,position2D::Vector2D{i+20,startY,0},color);
+    for (int i = 20; i <width ; i+=spacing) {
+        periwinkles.emplace_back(size,position2D::Vector2D{i+20.,startY,0},color);
     }
 
 
 }
 
-void moveDown(){
-
-    for (auto &periwinkle : periwinkles) {
-        periwinkle.translate(position2D::Vector2D{0,1});
+void spawnRow(int time) {
+    int waitTime;
+    if (time > 35) {
+        waitTime = 7000;
+        --time;
+    } else if (time > 25) {
+        waitTime = 5000;
+        --time;
+    } else if (time > 15) {
+        waitTime = 3000;
+        --time;
+    } else {
+        waitTime = 1500;
     }
+
+    addRow();
+
+    glutTimerFunc(waitTime, spawnRow, time);
+}
+
+void moveDown(int time){
+    double translateDist;
+    if (time > 35*3) {
+        translateDist = 20;
+        --time;
+    } else if (time > 25*3) {
+        translateDist = 30;
+        --time;
+    } else if (time > 15*3) {
+        translateDist = 35;
+        --time;
+    } else {
+        translateDist = 45;
+    }
+    for (auto &periwinkle : periwinkles) {
+        periwinkle.translate(position2D::Vector2D{0,translateDist});
+    }
+
+    glutTimerFunc(500, moveDown, time);
 }
