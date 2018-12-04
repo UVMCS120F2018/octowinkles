@@ -11,6 +11,7 @@ enum screen { START, MAIN, END, };
 GLdouble width, height;
 int wd;
 screen currentScreen = START;
+int scoreCounter;
 
 /* BUTTONS */
 Button startButton(Quad({0.17,0.88,0.55}, {480, 340}, 300, 75), "PLAY");
@@ -23,16 +24,12 @@ Hank hank(position2D::Vector2D{480, 660,0});
 Hank papaHank(position2D::Vector2D{200, 200,0}); // This is start screen hank
 vector<Periwinkle> periwinkles;
 
-
-
-
-int getScore(){
-    return scoreCounter;
-}
-
 void init() {
     width = 960;
     height = 720;
+
+
+
 }
 /* Initialize OpenGL Graphics */
 void initGL() {
@@ -239,9 +236,7 @@ int main(int argc, char** argv) {
 
 
 
-/* Screen Handleres  */
-
-
+/* Screen Handler's  */
 void displayScreenStart(){
 
     displayText(width/2-100,100,1,0,1, "Attack of the Periwinkles");
@@ -259,10 +254,11 @@ void displayScreenEnd(){
 void displayScreenMain(){
 
     displayText(width-200,20,0,0,0, "Score: ");
-    displayText(width-125,20,0,0,0, std::to_string(getScore()));
+    displayText(width-125,20,0,0,0, to_string(scoreCounter));
+
     for (auto &periwinkle : periwinkles) {
         periwinkle.draw();
-        if(periwinkle.getCenter().y == 610) {
+        if(periwinkle.getCenter().y == 610) { // Handles game end (if a periwinkle gets to the bottom)
             moveToEnd();
         }
     }
@@ -291,6 +287,9 @@ void moveToStart() {
 */
 void moveToMain() {
     glClearColor(0.4f,0.7f,0.8f,1.0f);
+    resetGame();
+    addRow();
+
     currentScreen = MAIN;
 
     addRow();
@@ -316,6 +315,7 @@ void moveToEnd() {
  * @param g the green value
  * @param b the blue value
  * @param string te string to display
+ *
  */
 void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, string message) {
     glColor3f(r,g,b);
@@ -390,3 +390,12 @@ void moveDown(int time){
 
     glutTimerFunc(500, moveDown, time);
 }
+
+/**
+ *  Resets all the peices
+ */
+void resetGame() {
+    periwinkles.clear();
+    scoreCounter = 0;
+}
+

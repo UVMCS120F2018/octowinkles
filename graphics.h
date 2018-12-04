@@ -14,7 +14,7 @@
 #include <GL/glut.h>
 #endif
 #include <string>
-int scoreCounter;
+
 
 int getScore();
 // Program initialization NOT OpenGL/GLUT dependent,
@@ -66,5 +66,6 @@ void moveDown(int time);
 
 void spawnRow(int time);
 
+void resetGame();
 
 #endif /* graphics_h */
