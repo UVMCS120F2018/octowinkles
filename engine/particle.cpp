@@ -7,7 +7,7 @@
 
 Particle::Particle(int size, position2D::Vector2D center, position2D::Vector2D velo, colorGraphics::RGBColor color, int life, Circle &g, int arcAngle): Circle(size, center, color), velocity(velo), startPoint(center), generator(g) {
     lifeSpan = life;
-    theta = velo.rotationAngle * M_PI /180;
+    theta = velo.rotationAngle * 3.14 /180;
     this->arcAngle = arcAngle;
 }
 
@@ -36,7 +36,7 @@ void Particle::update() {
         increment = 0;
         position2D::Vector2D velo = generator.getPointOnEdge(arcAngle);
         setPosition(velo);
-        theta = velo.rotationAngle * M_PI / 180;
+        theta = velo.rotationAngle * 3.14 / 180;
     }
 }
 

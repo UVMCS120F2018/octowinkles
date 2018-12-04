@@ -24,7 +24,7 @@ void Quadrangle::draw() {
     glBegin(GL_POLYGON);
     glColor3f(getColor().r, getColor().g, getColor().b);
 
-    double theta = getCenter().rotationAngle * M_PI / 180.;
+    double theta = getCenter().rotationAngle * 3.14 / 180.;
 
     std::vector<int> xCoords = {-(side1 / 2), (side1 / 2), (side1 / 2), -(side1 / 2)};
 

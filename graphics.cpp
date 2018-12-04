@@ -1,9 +1,9 @@
 #include "graphics.h"
 #include "engine/button.h"
 #include "ink.h"
-#include "periwinkle.h"
 #include "hank.h"
-#include <string>
+#include "periwinkle.h"
+#include <string.h>
 
 
 /* WINDOW STUFF */
@@ -26,7 +26,9 @@ vector<Periwinkle> periwinkles;
 
 
 
-
+int getScore(){
+    return scoreCounter;
+}
 
 void init() {
     width = 960;
@@ -259,6 +261,8 @@ void displayScreenEnd(){
 
 void displayScreenMain(){
 
+    displayText(width-200,20,0,0,0, "Score: ");
+    displayText(width-125,20,0,0,0, std::to_string(getScore()));
     for (auto &periwinkle : periwinkles) {
         periwinkle.draw();
         if(periwinkle.getCenter().y == 610) {
@@ -270,6 +274,8 @@ void displayScreenMain(){
 
     moveDown();
     //addRow();
+
+
 
 }
 
@@ -311,11 +317,11 @@ void moveToEnd() {
  * @param b the blue value
  * @param string te string to display
  */
-void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, const char *string) {
+void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, string message) {
     glColor3f(r,g,b);
     glRasterPos2f(x,y);
-    for (int i = 0; i < std::strlen(string); i++) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, string[i] );
+    for (int i = 0; i < message.length(); i++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, message[i] );
     }
 }
 

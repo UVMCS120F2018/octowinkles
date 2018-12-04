@@ -13,7 +13,10 @@
 #else
 #include <GL/glut.h>
 #endif
+#include <string>
+int scoreCounter;
 
+int getScore();
 // Program initialization NOT OpenGL/GLUT dependent,
 // as we haven't created a GLUT window yet
 void init();
@@ -53,7 +56,7 @@ void moveToMain();
 
 void moveToEnd();
 
-void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, const char *string);
+void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, std::string message);
 
 void quitGame();
 

@@ -23,11 +23,11 @@ int Circle::getRadius() {
 }
 
 double Circle::getPerimeter() {
-    return 2 * M_PI * radius;
+    return 2 * 3.14 * radius;
 }
 
 double Circle::getArea() {
-    return M_PI * radius * radius;
+    return 3.14 * radius * radius;
 }
 
 void Circle::draw() {
@@ -55,7 +55,7 @@ position2D::Vector2D Circle::getPointOnEdge() {
     RandNum r;
 
     float angle = r.getInt(360);
-    float theta = angle * M_PI / 180;
+    float theta = angle * 3.14 / 180;
 
     int x = cosf(theta) * radius + centerPoint.x;
     int y = sinf(theta) * radius + centerPoint.y;
@@ -68,7 +68,7 @@ position2D::Vector2D Circle::getPointOnEdge(int arcAngle) {
     RandNum r;
 
     float angle = r.getInt(arcAngle / -2, arcAngle / 2) + centerPoint.rotationAngle;
-    float theta = angle * M_PI / 180;
+    float theta = angle * 3.14 / 180;
 
     int x = cosf(theta) * radius + centerPoint.x;
     int y = sinf(theta) * radius + centerPoint.y;
