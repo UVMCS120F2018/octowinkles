@@ -271,12 +271,23 @@ void displayScreenMain(){
     hank.draw();
 
     for(int i = 0; i<inks.size() ; i++){
-        inks[i].draw();
-        inks[i].translate(position2D::Vector2D{0.0,-5.0});
 
-        if(inks[i].getCenter().y <= 0) {
+        inks[i].draw();
+        inks[i].translate(position2D::Vector2D{0.0,-5.0}); // Move the ink
+
+        if(inks[i].getCenter().y <= 0) { // Checks to see if the ink is on on the top of screen
             inks.erase(inks.begin() + i);
         }
+
+        for (int j = 0; j < periwinkles.size(); ++j) { // Checks to see if ink makes contact with any periwinkle
+            if(inks[i].isOverlapping(periwinkles[j])) {
+                inks.erase(inks.begin() + i);
+                periwinkles.erase(periwinkles.begin() + j);
+                ++scoreCounter;
+                break;
+            }
+        }
+
     }
 }
 
@@ -296,7 +307,6 @@ void moveToStart() {
 void moveToMain() {
     glClearColor(0.4f,0.7f,0.8f,1.0f);
     resetGame();
-    addRow();
 
     currentScreen = MAIN;
 
@@ -405,5 +415,6 @@ void moveDown(int time){
 void resetGame() {
     periwinkles.clear();
     scoreCounter = 0;
+    inks.clear();
 }
 
