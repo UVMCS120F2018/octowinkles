@@ -18,7 +18,8 @@ public:
     Hank(position2D::Vector2D point);
     void draw() override;
     void setPosition(position2D::Vector2D point);
-    void move();
+    void moveRight(double dist);
+    void moveLeft(double dist);
 
 };
 

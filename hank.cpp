@@ -33,6 +33,16 @@ void Hank::draw(){
 void Hank::setPosition(position2D::Vector2D point) {
 
 }
-void Hank::move(){
+void Hank::moveRight(double dist){
+    if(position.x<910){
+        position = {position.x+dist, position.y, position.rotationAngle};
+    }
+
+}
+
+void Hank::moveLeft(double dist){
+    if(position.x>50){
+        position = {position.x-dist, position.y, position.rotationAngle};
+    }
 
 }

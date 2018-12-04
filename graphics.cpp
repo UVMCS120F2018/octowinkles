@@ -92,9 +92,11 @@ void kbdS(int key, int x, int y) {
 
             break;
         case GLUT_KEY_LEFT:
+            testHank.moveLeft(10);
 
             break;
         case GLUT_KEY_RIGHT:
+            testHank.moveRight(10);
 
             break;
         case GLUT_KEY_UP:
@@ -249,10 +251,10 @@ void displayScreenMain(){
     Periwinkle p(17, position2D::Vector2D(50, 50), colorGraphics::GREEN);
     p.draw();
 
-    testink.draw();
+
     y++;
     testink.translate(position2D::Vector2D{x,y,0});
-
+    testink.draw();
     testHank.draw();
 
 }
