@@ -8,17 +8,24 @@ Hank::Hank(position2D::Vector2D point):Entity(point), position(point.x, point.y)
 
 }
 void Hank::draw(){
-    Circle mainCircle(50, {480, 670, 0}, hankColor);
+    double centX = position.x;
+    double centY = position.y;
+//    Circle mainCircle(50, {480, 670, 0}, hankColor);
+    Circle mainCircle(50, position, hankColor);
     mainCircle.draw();
 
-    Circle LeftEyeOne(10, {490, 645, 0}, eyeColor);
-    Circle RightEyeTwo(10, {470, 645, 0}, eyeColor);
+//    Circle LeftEyeOne(10, {490, 645, 0}, eyeColor);
+    Circle LeftEyeOne(10, {centX+10, centY-25, 0}, eyeColor);
+//    Circle RightEyeTwo(10, {470, 645, 0}, eyeColor);
+    Circle RightEyeTwo(10, {centX-10, centY-25, 0}, eyeColor);
 
     LeftEyeOne.draw();
     RightEyeTwo.draw();
 
-    Circle pupilLeft(5, {485,640, 0}, pupilColor);
-    Circle pupilRight(5, {465,640, 0}, pupilColor);
+//    Circle pupilLeft(5, {485,640, 0}, pupilColor);
+    Circle pupilLeft(5, {centX+5,centY-30, 0}, pupilColor);
+//    Circle pupilRight(5, {465,640, 0}, pupilColor);
+    Circle pupilRight(5, {centX-15,centY-30, 0}, pupilColor);
 
     pupilLeft.draw();
     pupilRight.draw();
