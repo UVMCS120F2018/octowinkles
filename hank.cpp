@@ -44,3 +44,8 @@ void Hank::moveLeft(double dist){
     }
 
 }
+
+void Hank::setPosition(position2D::Vector2D v) {
+    Entity::setPosition(v);
+    position = {v.x, v.y, v.rotationAngle};
+}

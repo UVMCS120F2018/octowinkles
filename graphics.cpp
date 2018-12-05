@@ -26,7 +26,7 @@ vector<Periwinkle> periwinkles;
 vector<Ink> inks;
 
 /* STATIC ITEMS */
-vector<double> xPlacements; //the parriwinkle placements
+vector<double> xPlacements; // The parriwinkle placements
 
 
 void init() {
@@ -136,6 +136,12 @@ void cursor(int x, int y) {
             break;
 
         case MAIN:
+
+            if(x < width && x > 0) {
+                hank.setPosition(position2D::Vector2D{(double)x, 660,0});
+            }
+
+
             break;
 
         case END:
@@ -148,7 +154,9 @@ void cursor(int x, int y) {
 
         default:break;
     }
-    glutPostRedisplay();
+
+
+    //glutPostRedisplay(); //This speeds up the game with movement of the mouse
 }
 
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON

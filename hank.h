@@ -21,6 +21,8 @@ public:
     void moveRight(double dist);
     void moveLeft(double dist);
 
+    void setPosition(position2D::Vector2D v);
+
 };
 
 #endif //OCTOWINKLE_HANK_H
