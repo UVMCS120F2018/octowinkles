@@ -10,7 +10,7 @@ using namespace colorGraphics;
 
 
 /* WINDOW STUFF */
-enum screen { START, MAIN, END, };
+enum screen { START, MAIN, END, INSTRUCTION};
 GLdouble width, height;
 int wd;
 screen currentScreen = START;
@@ -18,13 +18,15 @@ int scoreCounter;
 
 /* BUTTONS */
 Button startButton(Quad({0.17,0.88,0.55}, {480, 340}, 300, 75), "PLAY");
-Button quitButton(Quad({1,0.32,0.32}, {480, 420}, 300, 75), "QUIT");
+Button instructionsButton(Quad({0.76,.37,0.82}, {480, 420}, 300, 75), "INSTRUCTIONS");
+Button quitButton(Quad({1,0.32,0.32}, {480, 500}, 300, 75), "QUIT");
 Button backButton(Quad({0,0,1}, {65, 50}, 80, 50), "< BACK");
 
 
 /* ITEMS */
 Hank hank(position2D::Vector2D{480, 660,0});
-Hank papaHank(position2D::Vector2D{200, 200,0}); // This is start screen hank
+Hank papaHank(position2D::Vector2D{150, 150,0}); // This is start screen hank
+Periwinkle papaWink(25, position2D::Vector2D{810, 150,0}, {.36,0.5,.26}); // This is start screen wink
 vector<Periwinkle> periwinkles;
 vector<Ink> inks;
 
@@ -56,7 +58,7 @@ void init() {
 /* Initialize OpenGL Graphics */
 void initGL() {
     // Set "clearing" or background color
-    glClearColor(255.0f, 255.0f, 255.0f, 1.0f); // Black and opaque
+    glClearColor(0.6f,0.7f,0.8f,1.0f);
 }
 
 /* Handler for window-repaint event. Call back when the window first appears and
@@ -87,6 +89,9 @@ void display() {
         case MAIN:
             displayScreenMain();
             break;
+        case INSTRUCTION:
+            displayScreenInst();
+            break;
 
         case END:
             displayScreenEnd();
@@ -99,8 +104,9 @@ void display() {
 }
 
 // http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
-void kbd(unsigned char key, int x, int y)
-{
+void kbd(unsigned char key, int x, int y) {
+
+
     // escape
     if (key == 27) {
         glutDestroyWindow(wd);
@@ -147,18 +153,29 @@ void cursor(int x, int y) {
             if (quitButton.isOverlapping(x, y)) { quitButton.hover(); }
             else { quitButton.release(); }
 
+            // Mousing over inst button
+            if (instructionsButton.isOverlapping(x, y)) { instructionsButton.hover(); }
+            else { instructionsButton.release(); }
+
+
             break;
 
         case MAIN:
 
-            if(x < width && x > 0) {
-                hank.setPosition(position2D::Vector2D{(double)x, 660,0});
-            }
+            if(x < width && x > 0) { hank.setPosition(position2D::Vector2D{(double)x, 660,0}); } // Move hank left and right with mouse movement
 
+            break;
+
+        case INSTRUCTION:
+
+            // Mousing over backButton
+            if (backButton.isOverlapping(x, y)) { backButton.hover();
+            } else { backButton.release(); }
 
             break;
 
         case END:
+
             // Mousing over backButton
             if (backButton.isOverlapping(x, y)) { backButton.hover();
             } else { backButton.release(); }
@@ -187,6 +204,7 @@ void mouse(int button, int state, int x, int y) {
             if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && startButton.isOverlapping(x, y)) { startButton.click(moveToMain); }
 
 
+
             // Quit button handler
             if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && quitButton.isOverlapping(x, y)) { quitButton.pressDown();
             } else { quitButton.release(); }
@@ -194,9 +212,28 @@ void mouse(int button, int state, int x, int y) {
             // Calls the game quit handler
             if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && quitButton.isOverlapping(x, y)) { quitButton.click(quitGame); }
 
+
+
+            // Quit button handler
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && instructionsButton.isOverlapping(x, y)) { instructionsButton.pressDown();
+            } else { instructionsButton.release(); }
+
+            // Calls the game quit handler
+            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && instructionsButton.isOverlapping(x, y)) { instructionsButton.click(moveToInst); }
+
             break;
 
         case MAIN:
+
+            break;
+
+        case INSTRUCTION:
+            // Back button handler
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && backButton.isOverlapping(x, y)) { backButton.pressDown(); }
+            else { backButton.release(); }
+
+            // Move to the Start screen
+            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && backButton.isOverlapping(x, y)) { backButton.click(moveToStart); }
 
             break;
 
@@ -248,7 +285,9 @@ int main(int argc, char** argv) {
 
     // register keyboard press event processing function
     // works for numbers, letters, spacebar, etc.
-    glutKeyboardFunc(kbd);
+    //glutKeyboardFunc(kbd);
+
+    glutKeyboardUpFunc(kbd);
 
     // register special event: function keys, arrows, etc.
     glutSpecialFunc(kbdS);
@@ -268,19 +307,46 @@ int main(int argc, char** argv) {
 }
 
 
-
 /* Screen Handler's  */
 void displayScreenStart(){
 
-    displayText(width/2-100,100,1,0,1, "Attack of the Periwinkles");
+
+    string scoreText = "Attack of the Periwinkles";
+    glColor3f(0,0,0);
+    glRasterPos2f(width/2-120,100);
+    for (char i : scoreText) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+
+
     startButton.draw();
+    instructionsButton.draw();
     quitButton.draw();
     papaHank.draw();
+    papaWink.draw();
 
 }
 
 void displayScreenEnd(){
-    displayText(width/2,100,1,0,1, "Your score: " + to_string(scoreCounter));
+
+    string endGameText = "The evil Periwinkles invaded your home!";
+    glColor3f(1,1,0);
+    glRasterPos2f(width/2-150, 200);
+    for (char i : endGameText) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+    string scoreText = "You fended off " + to_string(scoreCounter) + ((scoreCounter==1)? " wink!":" winks!");
+    glColor3f(1,1,0);
+    glRasterPos2f(width/2-100, 250);
+    for (char i : scoreText) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+    for (auto &psys : particleSystems)
+        psys.stop();
+
     backButton.draw();
 }
 
@@ -289,7 +355,7 @@ void displayScreenMain(){
     for (auto &psys : particleSystems)
         psys.draw();
 
-    displayText(width-125,20,0,0,0, "Score:" + to_string(scoreCounter));
+    displayText(width-125,20,0,0,0, "Score: " + to_string(scoreCounter));
 
     for (auto &periwinkle : periwinkles) {
         periwinkle.draw();
@@ -299,7 +365,7 @@ void displayScreenMain(){
     }
 
 
-    hank.draw();
+
 
     for(int i = 0; i<inks.size() ; i++){
 
@@ -320,13 +386,37 @@ void displayScreenMain(){
         }
 
     }
+
+    hank.draw();
+
+}
+
+void displayScreenInst() {
+
+    backButton.draw();
+
+    string scoreText = "INSTRUCTIONS";
+    glColor3f(1,0,1);
+    glRasterPos2f(width/2-120,100);
+    for (char i : scoreText) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+
+    displayText(200,200,0,0,0,"Dont let the Periwinkles of peril touch the bottom and invade Hanks home!");
+    displayText(200,225,0,0,0,"The Periwinkles will slowly get faster so watch out!");
+
+    displayText(200,275,0,0,0,"Press [space] to shoot ink.");
+    displayText(200,300,0,0,0,"Press [left arrow], [right arrow], or move the Mouse to move Hank.");
+
+
 }
 
 /**
  * Change to the Start screen and reset animation variables
 */
 void moveToStart() {
-    glClearColor(1.0f,1.0f,1.0f,1.0f); // white and opaque
+    glClearColor(0.6f,0.7f,0.8f,1.0f);
     currentScreen = START;
 }
 
@@ -349,14 +439,25 @@ void moveToMain() {
     glutTimerFunc(500, moveDown, 50*14);
     glutTimerFunc(7000, spawnRow, 50);
 
+    glutSetCursor(GLUT_CURSOR_NONE);
+
 }
 
 /**
  * Change screen to End
 */
 void moveToEnd() {
+    glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+    glClearColor(0.6f,0.7f,0.8f,1.0f);
     currentScreen = END;
     inPlay = false;
+}
+
+/**
+ * Change screen to Instructions
+*/
+void moveToInst(){
+    currentScreen = INSTRUCTION;
 }
 
 
@@ -397,7 +498,7 @@ void addRow(int number){
     double size = 25.0;
     int spacing = 50;
     double startY = size+5;
-    colorGraphics::RGBColor color{1.0,0.0,0.0};
+    colorGraphics::RGBColor color{.36,0.5,.26};
 
 
     vector<bool> placements = {false,false,false,false,false,false,false,false,false}; // 9 places to place the winkles
