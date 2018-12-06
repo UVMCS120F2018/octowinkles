@@ -13,7 +13,7 @@ private:
 public:
     Periwinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color);
 
-    void draw() override;
+    virtual void draw() override;
     void update() override;
 
 };
