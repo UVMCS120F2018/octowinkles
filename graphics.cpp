@@ -29,6 +29,9 @@ vector<Ink> inks;
 vector<double> xPlacements; // The parriwinkle placements
 
 
+/* GLOBAL VARIABLES */
+bool inPlay = false;
+
 void init() {
     width = 960;
     height = 720;
@@ -321,10 +324,11 @@ void moveToMain() {
 
     currentScreen = MAIN;
 
+
+    inPlay = true;
     addRow(3);
     glutTimerFunc(500, moveDown, 50*14);
     glutTimerFunc(7000, spawnRow, 50);
-
 
 }
 
@@ -333,6 +337,7 @@ void moveToMain() {
 */
 void moveToEnd() {
     currentScreen = END;
+    inPlay = false;
 }
 
 
@@ -401,7 +406,7 @@ void addRow(int number){
 }
 
 void spawnRow(int time) {
-    int waitTime;
+    unsigned int waitTime;
     if (time > 35) {
         waitTime = 7000;
         --time;
@@ -417,7 +422,8 @@ void spawnRow(int time) {
 
     addRow(3);
 
-    glutTimerFunc(waitTime, spawnRow, time);
+    if (inPlay)
+        glutTimerFunc(waitTime, spawnRow, time);
 }
 
 void moveDown(int time){
@@ -438,7 +444,8 @@ void moveDown(int time){
         periwinkle.translate(position2D::Vector2D{0,translateDist});
     }
 
-    glutTimerFunc(500, moveDown, time);
+    if (inPlay)
+        glutTimerFunc(500, moveDown, time);
 }
 
 /**
@@ -449,6 +456,7 @@ void resetGame() {
     scoreCounter = 0;
     inks.clear();
     hank.setPosition(position2D::Vector2D{480, 660,0});
+    inPlay = false;
 
 }
 
