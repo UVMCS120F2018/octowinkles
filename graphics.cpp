@@ -15,13 +15,15 @@ int scoreCounter;
 
 /* BUTTONS */
 Button startButton(Quad({0.17,0.88,0.55}, {480, 340}, 300, 75), "PLAY");
-Button quitButton(Quad({1,0.32,0.32}, {480, 420}, 300, 75), "QUIT");
+Button instructionsButton(Quad({0.76,.37,0.82}, {480, 420}, 300, 75), "INSTRUCTIONS");
+Button quitButton(Quad({1,0.32,0.32}, {480, 500}, 300, 75), "QUIT");
 Button backButton(Quad({0,0,1}, {65, 50}, 80, 50), "< BACK");
 
 
 /* ITEMS */
 Hank hank(position2D::Vector2D{480, 660,0});
-Hank papaHank(position2D::Vector2D{200, 200,0}); // This is start screen hank
+Hank papaHank(position2D::Vector2D{150, 150,0}); // This is start screen hank
+Periwinkle papaWink(25, position2D::Vector2D{810, 150,0}, {.36,0.5,.26}); // This is start screen wink
 vector<Periwinkle> periwinkles;
 vector<Ink> inks;
 
@@ -42,7 +44,7 @@ void init() {
 /* Initialize OpenGL Graphics */
 void initGL() {
     // Set "clearing" or background color
-    glClearColor(255.0f, 255.0f, 255.0f, 1.0f); // Black and opaque
+    glClearColor(0.6f,0.7f,0.8f,1.0f);
 }
 
 /* Handler for window-repaint event. Call back when the window first appears and
@@ -255,19 +257,46 @@ int main(int argc, char** argv) {
 /* Screen Handler's  */
 void displayScreenStart(){
 
-    displayText(width/2-100,100,1,0,1, "Attack of the Periwinkles");
+
+    string scoreText = "Attack of the Periwinkles";
+    glColor3f(1,0,1);
+    glRasterPos2f(width/2-120,100);
+    for (char i : scoreText) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+
     startButton.draw();
+    instructionsButton.draw();
     quitButton.draw();
     papaHank.draw();
+    papaWink.draw();
 
 }
 
 void displayScreenEnd(){
-    displayText(width/2,100,1,0,1, "Your score: " + to_string(scoreCounter));
+
+    string endGameText = "The evil Periwinkles invaded your home!";
+    glColor3f(1,1,0);
+    glRasterPos2f(width/2-150, 200);
+    for (char i : endGameText) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+    string scoreText = "You fended off " + to_string(scoreCounter) + " winks!";
+    glColor3f(1,1,0);
+    glRasterPos2f(width/2-100, 250);
+    for (char i : scoreText) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+
+
     backButton.draw();
 }
 
 void displayScreenMain(){
+
 
     displayText(width-125,20,0,0,0, "Score:" + to_string(scoreCounter));
 
@@ -279,7 +308,7 @@ void displayScreenMain(){
     }
 
 
-    hank.draw();
+
 
     for(int i = 0; i<inks.size() ; i++){
 
@@ -300,13 +329,22 @@ void displayScreenMain(){
         }
 
     }
+
+    hank.draw();
+
+
+
+
+
+
+
 }
 
 /**
  * Change to the Start screen and reset animation variables
 */
 void moveToStart() {
-    glClearColor(1.0f,1.0f,1.0f,1.0f); // white and opaque
+    glClearColor(0.6f,0.7f,0.8f,1.0f);
     currentScreen = START;
 }
 
@@ -325,6 +363,8 @@ void moveToMain() {
     glutTimerFunc(500, moveDown, 50*14);
     glutTimerFunc(7000, spawnRow, 50);
 
+    glutSetCursor(GLUT_CURSOR_NONE);
+
 
 }
 
@@ -332,6 +372,8 @@ void moveToMain() {
  * Change screen to End
 */
 void moveToEnd() {
+    glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+    glClearColor(0.6f,0.7f,0.8f,1.0f);
     currentScreen = END;
 }
 
@@ -373,7 +415,7 @@ void addRow(int number){
     double size = 25.0;
     int spacing = 50;
     double startY = size+5;
-    colorGraphics::RGBColor color{1.0,0.0,0.0};
+    colorGraphics::RGBColor color{.36,0.5,.26};
 
 
     vector<bool> placements = {false,false,false,false,false,false,false,false,false}; // 9 places to place the winkles
