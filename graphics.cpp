@@ -295,7 +295,7 @@ void displayScreenStart(){
 
 
     string scoreText = "Attack of the Periwinkles";
-    glColor3f(1,0,1);
+    glColor3f(0,0,0);
     glRasterPos2f(width/2-120,100);
     for (char i : scoreText) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
@@ -320,7 +320,7 @@ void displayScreenEnd(){
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
 
-    string scoreText = "You fended off " + to_string(scoreCounter) + " winks!";
+    string scoreText = "You fended off " + to_string(scoreCounter) + ((scoreCounter==1)? " wink!":" winks!");
     glColor3f(1,1,0);
     glRasterPos2f(width/2-100, 250);
     for (char i : scoreText) {
