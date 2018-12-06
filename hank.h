@@ -3,6 +3,7 @@
 //
 #include "engine/entity.h"
 #include "engine/circle.h"
+#include "engine/quadrangle.h"
 #include "ink.h"
 #include <vector>
 using namespace std;

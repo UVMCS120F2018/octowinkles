@@ -14,6 +14,28 @@ void Hank::draw(){
     Circle mainCircle(50, position, hankColor);
     mainCircle.draw();
 
+    Quadrangle leg1(20,55, {centX+45, centY+35, 105}, hankColor);
+    Quadrangle leg2(20,55, {centX-45, centY+35, -105}, hankColor);
+    Quadrangle leg3(20,55, {centX-15, centY+55, 35}, hankColor);
+    Quadrangle leg4(20,55, {centX+15, centY+55, -35}, hankColor);
+    leg1.draw();
+    leg2.draw();
+    leg3.draw();
+    leg4.draw();
+
+    Circle cleg1(10, {centX+73, centY+44, 0}, hankColor);
+    Circle cleg2(10, {centX-73, centY+44, 0}, hankColor);
+    Circle cleg3(10, {centX-30, centY+76, 0}, hankColor);
+    Circle cleg4(10, {centX+30, centY+76, 0}, hankColor);
+
+
+    cleg1.draw();
+    cleg2.draw();
+    cleg3.draw();
+    cleg4.draw();
+
+
+
 //    Circle LeftEyeOne(10, {490, 645, 0}, eyeColor);
     Circle LeftEyeOne(10, {centX+10, centY-25, 0}, eyeColor);
 //    Circle RightEyeTwo(10, {470, 645, 0}, eyeColor);
@@ -36,6 +58,8 @@ void Hank::draw(){
 
     mouth.draw();
     mouth2.draw();
+
+
 }
 
 void Hank::moveRight(double dist){
