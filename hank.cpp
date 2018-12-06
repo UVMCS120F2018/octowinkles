@@ -29,6 +29,13 @@ void Hank::draw(){
 
     pupilLeft.draw();
     pupilRight.draw();
+
+
+    Circle mouth(20, {centX, centY+15,0}, eyeColor);
+    Circle mouth2(20, {centX, centY+10, 0}, hankColor);
+
+    mouth.draw();
+    mouth2.draw();
 }
 
 void Hank::moveRight(double dist){
