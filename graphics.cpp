@@ -389,11 +389,11 @@ void displayScreenInst() {
     }
 
 
-    displayText(200,200,0,0,0,"Dont let the Periwinkles touch the bottom and invade Hanks home!");
+    displayText(200,200,0,0,0,"Dont let the Periwinkles of peril touch the bottom and invade Hanks home!");
     displayText(200,225,0,0,0,"The Periwinkles will slowly get faster so watch out!");
 
     displayText(200,275,0,0,0,"Press [space] to shoot ink.");
-    displayText(200,300,0,0,0,"Press [left arrow], [right arrow], or the Mouse to move Hank.");
+    displayText(200,300,0,0,0,"Press [left arrow], [right arrow], or move the Mouse to move Hank.");
 
 
 }
