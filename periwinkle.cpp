@@ -11,7 +11,6 @@ Periwinkle::Periwinkle(int radius, position2D::Vector2D center, colorGraphics::R
 void Periwinkle::draw() {
     glBegin(GL_POLYGON);
     glColor3f(getColor().r, getColor().g, getColor().b);
-
     int r = getRadius();
     int num_segments = 50;
     int cx = getCenter().x, cy = getCenter().y;
@@ -25,6 +24,20 @@ void Periwinkle::draw() {
 
         glVertex2f(x + cx, y + cy);//output vertex
     }
+    Circle eye = Circle(4, {getCenter().x, getCenter().y, 0}, getColor());
+    Circle eye1 = Circle(6, {getCenter().x+10, getCenter().y-5, 20}, {1.,1.,1.});
+    Circle puple2 = Circle(3, {getCenter().x+10, getCenter().y-5, 20}, {0.,0.,0.});
+    Circle eye2 = Circle(6, {getCenter().x, getCenter().y-5, 20}, {1.,1.,1.});
+    Circle puple1 = Circle(3, {getCenter().x, getCenter().y-5, 20}, {0.,0.,0.});
+    Circle mouth = Circle(3, {getCenter().x-5, getCenter().y+10, 20}, {1.,1.,1.});
+    Circle mouth2 = Circle(3, {getCenter().x-5, getCenter().y+7, 20}, getColor());
+    eye.draw();
+    eye1.draw();
+    eye2.draw();
+    puple1.draw();
+    puple2.draw();
+    mouth.draw();
+    mouth2.draw();
 
     glEnd();
 
