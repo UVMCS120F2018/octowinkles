@@ -37,7 +37,7 @@ vector<ParticleSystem> particleSystems {
 
 
 /* STATIC ITEMS */
-vector<double> xPlacements; // The parriwinkle placements
+vector<double> xPlacements; // The periwinkle placements
 
 
 /* GLOBAL VARIABLES */
