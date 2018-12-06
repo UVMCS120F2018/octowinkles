@@ -91,6 +91,8 @@ void display() {
 
 // http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
 void kbd(unsigned char key, int x, int y) {
+
+
     // escape
     if (key == 27) {
         glutDestroyWindow(wd);
@@ -266,7 +268,9 @@ int main(int argc, char** argv) {
 
     // register keyboard press event processing function
     // works for numbers, letters, spacebar, etc.
-    glutKeyboardFunc(kbd);
+    //glutKeyboardFunc(kbd);
+
+    glutKeyboardUpFunc(kbd);
 
     // register special event: function keys, arrows, etc.
     glutSpecialFunc(kbdS);
@@ -285,9 +289,6 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-void glutKeyboardUpFunc(void (*func)(unsigned char key, int x, int y)){
-
-}
 
 /* Screen Handler's  */
 void displayScreenStart(){
