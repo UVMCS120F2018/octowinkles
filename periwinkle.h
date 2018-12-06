@@ -18,5 +18,14 @@ public:
 
 };
 
+class Smilewinkle : public Periwinkle{
+public:
+    Smilewinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color);
+    void draw() override;
+};
 
+class Frownwinkle : public Periwinkle{
+    Frownwinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color);
+   void draw() override;
+};
 #endif //OCTOWINKLE_PERIWINKLE_H
