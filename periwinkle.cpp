@@ -8,6 +8,12 @@
 Periwinkle::Periwinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color)
 : Circle(radius, center, color) {}
 
+Smilewinkle::Smilewinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color)
+: Periwinkle(radius, center, color) {}
+
+Frownwinkle::Frownwinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color)
+: Periwinkle(radius, center, color) {}
+
 void Periwinkle::update() {
     Entity::update();
 }
