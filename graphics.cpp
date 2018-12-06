@@ -26,7 +26,7 @@ Button backButton(Quad({0,0,1}, {65, 50}, 80, 50), "< BACK");
 /* ITEMS */
 Hank hank(position2D::Vector2D{480, 660,0});
 Hank papaHank(position2D::Vector2D{150, 150,0}); // This is start screen hank
-Periwinkle papaWink(25, position2D::Vector2D{810, 150,0}, {.36,0.5,.26}); // This is start screen wink
+Smilewinkle papaWink(25, position2D::Vector2D{810, 150,0}, {.36,0.5,.26}); // This is start screen wink
 vector<Periwinkle> periwinkles;
 vector<Ink> inks;
 
@@ -344,9 +344,6 @@ void displayScreenEnd(){
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
 
-    for (auto &psys : particleSystems)
-        psys.stop();
-
     backButton.draw();
 }
 
@@ -456,6 +453,9 @@ void moveToEnd() {
     glClearColor(0.6f,0.7f,0.8f,1.0f);
     currentScreen = END;
     inPlay = false;
+
+    for (auto &psys : particleSystems)
+        psys.stop();
 }
 
 /**
@@ -503,8 +503,6 @@ void addRow(int number){
     double size = 25.0;
     int spacing = 50;
     double startY = size+5;
-    colorGraphics::RGBColor color{.36,0.5,.26};
-
 
     vector<bool> placements = {false,false,false,false,false,false,false,false,false}; // 9 places to place the winkles
 
@@ -521,8 +519,17 @@ void addRow(int number){
 
     // Draw the winkles
     for (int i = 0; i < placements.size(); ++i) {
-        if(placements[i]) { periwinkles.emplace_back(size,position2D::Vector2D{xPlacements[i], startY,0},color); }
+        if(placements[i]) {
+            if(rand()%2) {
+                periwinkles.push_back(Smilewinkle(size,position2D::Vector2D{xPlacements[i], startY,0},{.36,0.5,.26}));
+            } else {
+                periwinkles.push_back(Frownwinkle(size,position2D::Vector2D{xPlacements[i], startY,0},{.35,0.79,.45}));
+            }
+        }
+
     }
+
+
 
 
 

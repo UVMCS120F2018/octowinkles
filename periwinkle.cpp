@@ -18,6 +18,11 @@ void Periwinkle::update() {
     Entity::update();
 }
 
+void Periwinkle::draw() {
+    Circle::draw();
+}
+
+
 void Smilewinkle::draw() {
     glBegin(GL_POLYGON);
     glColor3f(getColor().r, getColor().g, getColor().b);
