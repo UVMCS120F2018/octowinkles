@@ -31,6 +31,7 @@ void display();
 // Trap and process alphanumeric keyboard events
 void kbd(unsigned char key, int x, int y);
 
+
 // Trap and process special keyboard events
 void kbdS(int key, int x, int y);
 
@@ -49,11 +50,15 @@ void displayScreenEnd();
 
 void displayScreenMain();
 
+void displayScreenInst();
+
 void moveToStart();
 
 void moveToMain();
 
 void moveToEnd();
+
+void moveToInst();
 
 void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, std::string message);
 

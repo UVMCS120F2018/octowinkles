@@ -7,7 +7,7 @@
 
 
 /* WINDOW STUFF */
-enum screen { START, MAIN, END, };
+enum screen { START, MAIN, END, INSTRUCTION};
 GLdouble width, height;
 int wd;
 screen currentScreen = START;
@@ -75,6 +75,9 @@ void display() {
         case MAIN:
             displayScreenMain();
             break;
+        case INSTRUCTION:
+            displayScreenInst();
+            break;
 
         case END:
             displayScreenEnd();
@@ -87,8 +90,7 @@ void display() {
 }
 
 // http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
-void kbd(unsigned char key, int x, int y)
-{
+void kbd(unsigned char key, int x, int y) {
     // escape
     if (key == 27) {
         glutDestroyWindow(wd);
@@ -135,18 +137,29 @@ void cursor(int x, int y) {
             if (quitButton.isOverlapping(x, y)) { quitButton.hover(); }
             else { quitButton.release(); }
 
+            // Mousing over inst button
+            if (instructionsButton.isOverlapping(x, y)) { instructionsButton.hover(); }
+            else { instructionsButton.release(); }
+
+
             break;
 
         case MAIN:
 
-            if(x < width && x > 0) {
-                hank.setPosition(position2D::Vector2D{(double)x, 660,0});
-            }
+            if(x < width && x > 0) { hank.setPosition(position2D::Vector2D{(double)x, 660,0}); } // Move hank left and right with mouse movement
 
+            break;
+
+        case INSTRUCTION:
+
+            // Mousing over backButton
+            if (backButton.isOverlapping(x, y)) { backButton.hover();
+            } else { backButton.release(); }
 
             break;
 
         case END:
+
             // Mousing over backButton
             if (backButton.isOverlapping(x, y)) { backButton.hover();
             } else { backButton.release(); }
@@ -175,6 +188,7 @@ void mouse(int button, int state, int x, int y) {
             if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && startButton.isOverlapping(x, y)) { startButton.click(moveToMain); }
 
 
+
             // Quit button handler
             if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && quitButton.isOverlapping(x, y)) { quitButton.pressDown();
             } else { quitButton.release(); }
@@ -182,9 +196,28 @@ void mouse(int button, int state, int x, int y) {
             // Calls the game quit handler
             if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && quitButton.isOverlapping(x, y)) { quitButton.click(quitGame); }
 
+
+
+            // Quit button handler
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && instructionsButton.isOverlapping(x, y)) { instructionsButton.pressDown();
+            } else { instructionsButton.release(); }
+
+            // Calls the game quit handler
+            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && instructionsButton.isOverlapping(x, y)) { instructionsButton.click(moveToInst); }
+
             break;
 
         case MAIN:
+
+            break;
+
+        case INSTRUCTION:
+            // Back button handler
+            if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON && backButton.isOverlapping(x, y)) { backButton.pressDown(); }
+            else { backButton.release(); }
+
+            // Move to the Start screen
+            if (state == GLUT_UP && button == GLUT_LEFT_BUTTON && backButton.isOverlapping(x, y)) { backButton.click(moveToStart); }
 
             break;
 
@@ -252,7 +285,9 @@ int main(int argc, char** argv) {
     return 0;
 }
 
+void glutKeyboardUpFunc(void (*func)(unsigned char key, int x, int y)){
 
+}
 
 /* Screen Handler's  */
 void displayScreenStart(){
@@ -264,6 +299,7 @@ void displayScreenStart(){
     for (char i : scoreText) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
+
 
 
     startButton.draw();
@@ -298,7 +334,7 @@ void displayScreenEnd(){
 void displayScreenMain(){
 
 
-    displayText(width-125,20,0,0,0, "Score:" + to_string(scoreCounter));
+    displayText(width-125,20,0,0,0, "Score: " + to_string(scoreCounter));
 
     for (auto &periwinkle : periwinkles) {
         periwinkle.draw();
@@ -340,6 +376,27 @@ void displayScreenMain(){
 
 }
 
+void displayScreenInst() {
+
+    backButton.draw();
+
+    string scoreText = "INSTRUCTIONS";
+    glColor3f(1,0,1);
+    glRasterPos2f(width/2-120,100);
+    for (char i : scoreText) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+
+    displayText(200,200,0,0,0,"Dont let the Periwinkles touch the bottom and invade Hanks home!");
+    displayText(200,225,0,0,0,"The Periwinkles will slowly get faster so watch out!");
+
+    displayText(200,275,0,0,0,"Press [space] to shoot ink.");
+    displayText(200,300,0,0,0,"Press [left arrow], [right arrow], or the Mouse to move Hank.");
+
+
+}
+
 /**
  * Change to the Start screen and reset animation variables
 */
@@ -375,6 +432,13 @@ void moveToEnd() {
     glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
     glClearColor(0.6f,0.7f,0.8f,1.0f);
     currentScreen = END;
+}
+
+/**
+ * Change screen to Instructions
+*/
+void moveToInst(){
+    currentScreen = INSTRUCTION;
 }
 
 
