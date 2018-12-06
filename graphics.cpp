@@ -27,7 +27,7 @@ Button backButton(Quad({0,0,1}, {65, 50}, 80, 50), "< BACK");
 Hank hank(position2D::Vector2D{480, 660,0});
 Hank papaHank(position2D::Vector2D{150, 150,0}); // This is start screen hank
 Smilewinkle papaWink(25, position2D::Vector2D{810, 150,0}, {.36,0.5,.26}); // This is start screen wink
-vector<Periwinkle> periwinkles;
+vector<unique_ptr<Periwinkle>> periwinkles;
 vector<Ink> inks;
 
 /* PARTICLE SYSTEMS */
@@ -355,8 +355,9 @@ void displayScreenMain(){
     displayText(width-125,20,0,0,0, "Score: " + to_string(scoreCounter));
 
     for (auto &periwinkle : periwinkles) {
-        periwinkle.draw();
-        if(periwinkle.getCenter().y >= 610) { // Handles game end (if a periwinkle gets to the bottom)
+
+        periwinkle->draw();
+        if(periwinkle->getCenter().y >= 610) { // Handles game end (if a periwinkle gets to the bottom)
             moveToEnd();
         }
     }
@@ -374,7 +375,7 @@ void displayScreenMain(){
         }
 
         for (int j = 0; j < periwinkles.size(); ++j) { // Checks to see if ink makes contact with any periwinkle
-            if(inks[i].isOverlapping(periwinkles[j])) {
+            if(inks[i].isOverlapping(*periwinkles[j])) {
                 inks.erase(inks.begin() + i);
                 periwinkles.erase(periwinkles.begin() + j);
                 ++scoreCounter;
@@ -521,9 +522,11 @@ void addRow(int number){
     for (int i = 0; i < placements.size(); ++i) {
         if(placements[i]) {
             if(rand()%2) {
-                periwinkles.push_back(Smilewinkle(size,position2D::Vector2D{xPlacements[i], startY,0},{.36,0.5,.26}));
+                unique_ptr<Periwinkle> smilewink(new Smilewinkle(size,position2D::Vector2D{xPlacements[i], startY,0},{.36,0.5,.26}));
+                periwinkles.push_back(move(smilewink));
             } else {
-                periwinkles.push_back(Frownwinkle(size,position2D::Vector2D{xPlacements[i], startY,0},{.35,0.79,.45}));
+                unique_ptr<Periwinkle> fownwink(new Frownwinkle(size,position2D::Vector2D{xPlacements[i], startY,0},{.35,0.79,.45}));
+                periwinkles.push_back(move(fownwink));
             }
         }
 
@@ -573,7 +576,7 @@ void moveDown(int time){
         translateDist = 45;
     }
     for (auto &periwinkle : periwinkles) {
-        periwinkle.translate(position2D::Vector2D{0,translateDist});
+        periwinkle->translate(position2D::Vector2D{0,translateDist});
     }
 
     if (inPlay)

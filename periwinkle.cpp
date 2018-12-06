@@ -3,25 +3,22 @@
 //
 
 #include "periwinkle.h"
+#include "engine/circle.h"
 #include "engine/graphics_imports.h"
 
-Periwinkle::Periwinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color)
-: Circle(radius, center, color) {}
+Periwinkle::Periwinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color) : Circle(radius, center, color) {}
 
-Smilewinkle::Smilewinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color)
-: Periwinkle(radius, center, color) {}
+Smilewinkle::Smilewinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color) : Periwinkle(radius, center, color) {}
 
-Frownwinkle::Frownwinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color)
-: Periwinkle(radius, center, color) {}
+Frownwinkle::Frownwinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color) : Periwinkle(radius, center, color) {}
 
 void Periwinkle::update() {
     Entity::update();
 }
 
 void Periwinkle::draw() {
-    Circle::draw();
-}
 
+}
 
 void Smilewinkle::draw() {
     glBegin(GL_POLYGON);
@@ -39,6 +36,7 @@ void Smilewinkle::draw() {
 
         glVertex2f(x + cx, y + cy);//output vertex
     }
+
     Circle eye = Circle(4, {getCenter().x, getCenter().y, 0}, getColor());
     Circle eye1 = Circle(6, {getCenter().x+10, getCenter().y-5, 20}, {1.,1.,1.});
     Circle puple2 = Circle(3, {getCenter().x+10, getCenter().y-5, 20}, {0.,0.,0.});
@@ -64,6 +62,8 @@ void Smilewinkle::draw() {
     glVertex2f(cx - r - 10.f, cy - r - 2.f);
 
     glEnd();
+
+
 }
 
 void Frownwinkle::draw() {
@@ -107,4 +107,6 @@ void Frownwinkle::draw() {
     glVertex2f(cx - r - 10.f, cy - r - 2.f);
 
     glEnd();
+
+    Periwinkle::draw();
 }
