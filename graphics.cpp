@@ -1,9 +1,12 @@
 #include "graphics.h"
 #include "engine/button.h"
+#include "engine/particle_system.h"
+#include "engine/structs.h"
 #include "ink.h"
 #include "hank.h"
 #include "periwinkle.h"
 #include <string.h>
+using namespace colorGraphics;
 
 
 /* WINDOW STUFF */
@@ -25,6 +28,14 @@ Hank papaHank(position2D::Vector2D{200, 200,0}); // This is start screen hank
 vector<Periwinkle> periwinkles;
 vector<Ink> inks;
 
+/* PARTICLE SYSTEMS */
+vector<ParticleSystem> particleSystems {
+    ParticleSystem(20, 4, 400, 2, 10, 10, RGBGradient(RGBColor(0.3,0.75,0.9), RGBColor(0., .9, 1.0)), position2D::Vector2D(100, 720, 271)),
+    ParticleSystem(20, 3, 400, 2, 10, 10, RGBGradient(RGBColor(0.3,0.75,0.9), RGBColor(0., .9, 1.0)), position2D::Vector2D(270, 720, 271)),
+    ParticleSystem(20, 5, 400, 2, 10, 10, RGBGradient(RGBColor(0.3,0.75,0.9), RGBColor(0., .9, 1.0)), position2D::Vector2D(680, 720, 271))
+};
+
+
 /* STATIC ITEMS */
 vector<double> xPlacements; // The parriwinkle placements
 
@@ -36,7 +47,7 @@ void init() {
     width = 960;
     height = 720;
 
-    // This sets the placements of the perriwinkles
+    // This sets the placements of the periwinkles
     int spacing = 50;
     for (double i = spacing; i < width; i+=width/9) { xPlacements.push_back(i); }
 
@@ -210,6 +221,9 @@ void timer(int dummy) {
 
     glutPostRedisplay();
     glutTimerFunc(30, timer, dummy);
+
+    for (auto &psys : particleSystems)
+        psys.update();
 }
 
 /* Main function: GLUT runs as a console application starting at main()  */
@@ -272,6 +286,9 @@ void displayScreenEnd(){
 
 void displayScreenMain(){
 
+    for (auto &psys : particleSystems)
+        psys.draw();
+
     displayText(width-125,20,0,0,0, "Score:" + to_string(scoreCounter));
 
     for (auto &periwinkle : periwinkles) {
@@ -324,6 +341,8 @@ void moveToMain() {
 
     currentScreen = MAIN;
 
+    for (auto &psys : particleSystems)
+        psys.start();
 
     inPlay = true;
     addRow(3);

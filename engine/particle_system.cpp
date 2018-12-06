@@ -49,7 +49,7 @@ void ParticleSystem::update() {
     }
 
     // if the the increment hasn't gotten up to the rate limit then don't generate another particle
-    if (increment < rate) {
+    if (increment / 5 < rate) {
         increment++;
     // if
     } else if (particles > 0 and canDraw) {

@@ -20,7 +20,9 @@ sea bottom the game is over and hank must find a new place to live.
 
 
 
-
+### Graphics Engine
+The graphics engine (all files in the `engine/` folder) were created for Final Project 1,
+and thus were authored by Ethan Nerney, Jeremy Weiland, Zach Bernstein, and 
 
 
 
