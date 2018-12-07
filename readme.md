@@ -38,4 +38,5 @@ The more perriwinkes you ink, the drop rate will increase and get faster.
 ### Scores
 For each wink you ink you gain one point. 
 
-The best 5 scores are kept and displayed at the end. (If time)
+The best 3 scores are kept and displayed at the end. If you beat any of the
+scores on the board enter your name to be on the score board. 
