@@ -8,7 +8,6 @@
 #include "periwinkle.h"
 #include <string.h>
 #include <fstream>
-
 using namespace colorGraphics;
 
 
@@ -35,6 +34,9 @@ Awinkle babyWink(25, position2D::Vector2D{810+35+35, 150-35-35,0}, {.35,0.79,.45
 vector<unique_ptr<Periwinkle>> periwinkles;
 vector<Ink> inks;
 vector<Player> scores;
+vector<char> highscoreName;
+bool enterHighscoreName = true;
+Button enterbox(Quad({1,1,1}, {960/2, 720-100}, 180, 30), "");
 
 /* PARTICLE SYSTEMS */
 vector<ParticleSystem> particleSystems {
@@ -118,12 +120,44 @@ void kbd(unsigned char key, int x, int y) {
         glutDestroyWindow(wd);
         exit(0);
     }
-    if (key == 32) {
+    if(key == 97) moveToEnd();
+
+    if(currentScreen == MAIN && key == 32){
         inks.emplace_back(hank.position);
     }
-    if (key == 'q') {
-        displayScreenEnd();
+
+
+    // Enter the highscore into name vector
+    if(currentScreen == END && enterHighscoreName){
+
+        // Backspace
+        if(key == 127 || key == 8) {
+            if(highscoreName.size() != 0) {
+                highscoreName.back();
+                highscoreName.pop_back();
+            }
+        }
+        else if(highscoreName.size() <= 10 && checkValidKey(key)) highscoreName.push_back(key);
+
+
+        // Add the entered key to the vector
+        string label;
+        for (char i : highscoreName) {
+            label =  string() + label + i;
+        }
+        enterbox.setLabel(label);
+
+
+        // Enter Key to save to a file
+        if(key == 13){
+            writeHighscore(label,scoreCounter);
+            sortStuff();
+            label.clear();
+            enterHighscoreName = false;
+        }
+
     }
+
 
     glutPostRedisplay();
 }
@@ -341,11 +375,14 @@ void displayScreenStart(){
 
 
 void sortStuff(){
+
+    scores.clear();
+
     string name = "";
     int score = 0;
 
 
-    ifstream file ("../HS.csv");
+    ifstream file("../scores.csv");
     if (file.is_open()){
         while (file && file.peek() != EOF){
             getline(file, name, ',');
@@ -353,16 +390,17 @@ void sortStuff(){
 
             //cout << name << ":" << score << endl;
 
-            scores.emplace_back(score,name);
+            scores.push_back(Player(score,name));
 
         }
         file.close();
+    } else {
+        cout << "UNABLE TO OPEN FILE";
     }
 
-    sort(scores.begin(),scores.begin()+scores.size());
+   sort(scores.begin(),scores.begin()+scores.size()-1);
 
 
-//    for(auto )
 
 }
 
@@ -394,7 +432,7 @@ void showHighScores(){
 
 void displayScreenEnd(){
 
-    showHighScores();
+
 
     string endGameText = "The evil Periwinkles invaded your home!";
     glColor3f(1,1,0);
@@ -411,6 +449,25 @@ void displayScreenEnd(){
     }
 
     backButton.draw();
+
+
+    showHighScores();
+
+    // IF end game score thing
+    if(enterHighscoreName) {
+        string scoreText = "Enter Your name!";
+        glColor3f(1,0,0);
+        glRasterPos2f(width/2-100, height - 200);
+        for (char i : scoreText) {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+        }
+        enterbox.draw();
+    }
+
+
+
+
+
 }
 
 void displayScreenMain(){
@@ -521,6 +578,10 @@ void moveToEnd() {
     currentScreen = END;
     inPlay = false;
 
+    // Check to see if new high scores
+
+    enterHighscoreName = true;
+
     for (auto &psys : particleSystems) psys.stop();
 
     sortStuff();
@@ -533,34 +594,6 @@ void moveToInst(){
     currentScreen = INSTRUCTION;
 }
 
-
-/* HELPER FUNCTIONS */
-
-/**
- * This function helps creating colored text
- * @param x the x position
- * @param y the y position
- * @param r the red value
- * @param g the green value
- * @param b the blue value
- * @param string te string to display
- *
- */
-void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, string message) {
-    glColor3f(r,g,b);
-    glRasterPos2f(x,y);
-    for (int i = 0; i < message.length(); i++) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, message[i] );
-    }
-}
-
-/**
- * Calls closeGame, which terminates the window
- */
-void quitGame() {
-    glutDestroyWindow(wd);
-    exit(0);
-}
 
 /**
  * Adds a row of periwinkles
@@ -655,6 +688,37 @@ void moveDown(int time){
         glutTimerFunc(500, moveDown, time);
 }
 
+
+
+
+/* HELPER FUNCTIONS */
+
+/**
+ * This function helps creating colored text
+ * @param x the x position
+ * @param y the y position
+ * @param r the red value
+ * @param g the green value
+ * @param b the blue value
+ * @param string te string to display
+ *
+ */
+void displayText( float x, GLfloat y, GLfloat r, GLfloat g, GLfloat b, string message) {
+    glColor3f(r,g,b);
+    glRasterPos2f(x,y);
+    for (int i = 0; i < message.length(); i++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, message[i] );
+    }
+}
+
+/**
+ * Calls closeGame, which terminates the window
+ */
+void quitGame() {
+    glutDestroyWindow(wd);
+    exit(0);
+}
+
 /**
  *  Resets all the peices
  */
@@ -665,6 +729,31 @@ void resetGame() {
     hank.setPosition(position2D::Vector2D{480, 660,0});
     inPlay = false;
     scores.clear();
+    highscoreName.clear();
 
 }
 
+void writeHighscore(string name, int score){
+
+    ofstream scoresInput ("../scores.csv",std::ios_base::app);
+    if (scoresInput.is_open()) {
+        scoresInput << name + "," + to_string(score) << endl;
+        scoresInput.close();
+    }
+    else cout << "Unable to open file";
+
+}
+
+/**
+ * Checks to see if the key is a valid typing key. The valid keys are 65 through 122 this is all the caps and lower case letters
+ * @param key
+ * @return true if valid, flase if not
+ */
+bool checkValidKey(unsigned char key){
+    for (int i = 65; i < 122; ++i) {
+       if(key == i){
+           return true;
+       }
+    }
+    return false;
+}

@@ -72,6 +72,10 @@ void spawnRow(int time);
 
 void resetGame();
 
+void writeHighscore(std::string name, int score);
+
+bool checkValidKey(unsigned char key);
+
 void showHighScores();
 
 void sortStuff();

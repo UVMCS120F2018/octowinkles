@@ -20,7 +20,11 @@ public:
 
     const std::string &getName() const;
 
-    friend bool operator<(Player p1, Player p2);
+    friend bool operator<(const Player &p1, const Player &p2);
+    friend bool operator<=(const Player &p1, const Player &p2);
+    friend bool operator>(const Player &p1, const Player &p2);
+    friend bool operator>=(const Player &p1, const Player &p2);
+    friend bool operator==(const Player &p1, const Player &p2);
 
 };
 

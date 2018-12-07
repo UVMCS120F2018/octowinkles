@@ -168,3 +168,7 @@ void Button::click(function<void()> callback) {
 void Button::move(int deltaX, int deltaY) {
     this->box.move(deltaX, deltaY);
 }
+
+void Button::setLabel(const string &label) {
+    Button::label = label;
+}
