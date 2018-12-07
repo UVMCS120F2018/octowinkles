@@ -62,6 +62,10 @@ private:
     /* Assume Quad includes color, center, width, height */
     Quad box;
     std::string label;
+public:
+    void setLabel(const std::string &label);
+
+private:
     color originalFill, hoverFill, pressFill;
 
 public:
