@@ -151,6 +151,7 @@ void kbd(unsigned char key, int x, int y) {
         // Enter Key to save to a file
         if(key == 13){
             writeHighscore(label,scoreCounter);
+            sortStuff();
             enterHighscoreName = false;
         }
 
@@ -373,6 +374,9 @@ void displayScreenStart(){
 
 
 void sortStuff(){
+
+    scores.clear();
+
     string name = "";
     int score = 0;
 
@@ -391,7 +395,7 @@ void sortStuff(){
         file.close();
     }
 
-    sort(scores.begin(),scores.begin()+scores.size());
+    sort(scores.begin(),scores.begin()+scores.size()-1);
 
 
 
@@ -425,7 +429,7 @@ void showHighScores(){
 
 void displayScreenEnd(){
 
-    showHighScores();
+
 
     string endGameText = "The evil Periwinkles invaded your home!";
     glColor3f(1,1,0);
@@ -444,6 +448,7 @@ void displayScreenEnd(){
     backButton.draw();
 
 
+    showHighScores();
 
     // IF end game score thing
     if(enterHighscoreName) {
@@ -730,7 +735,7 @@ void writeHighscore(string name, int score){
     ofstream scores;
     scores.open ("scores.csv", std::ios_base::app);
 
-    scores << name + "," + to_string(score);
+    scores << name + "," + to_string(score) << endl;
 
     scores.close();
 }
