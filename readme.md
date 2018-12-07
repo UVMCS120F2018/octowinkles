@@ -11,8 +11,9 @@ the PERIWINKLES OF PERIL! Help hank defend his home by throwing ink at the Peril
 
 ### Classes
 * Octopus -- Hank
-* Periwinkels of Peril (Sea Snail) 
+* Periwinkels of Peril 
 * Ink
+* Player (for scoring)
 
 ### Concept of Game
 Periwinkles are invading the personal space of Hank the octopus 
@@ -40,3 +41,27 @@ For each wink you ink you gain one point.
 
 The best 3 scores are kept and displayed at the end. If you beat any of the
 scores on the board enter your name to be on the score board. 
+
+# Polymorphism
+Polymorphism is deployed with the periwinkles. There are three subclasses of periwinkle:
+* SmileWinkle
+* FrowWinkle
+* Awinkle
+
+These winkles are added to an array at random and then all drawn by calling 
+(the index in the vector).draw. 
+
+# Impressiveness 
+##### Bubbles
+Bubbles are floating around in the background because we are under water and there 
+are bubbles underwater
+##### Mouse
+The mouse diapers so you can't just point to the winkle you want to ink. 
+This makes the game more challenging.  
+##### Winkle Drop Rate
+The winkles start dropping faster and closer together the farther along in the 
+game you get. 
+##### Scores
+After each game, the top three scores are displayed and there's a blank text box.
+If you feel so inclined, you can put your name into the box and if you beat anyone on
+the score board you will appear on the board after hitting enter.
