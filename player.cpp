@@ -17,9 +17,26 @@ const std::string &Player::getName() const {
 }
 
 
-bool operator<(Player player1, Player player2){
-    return player1.getScore() >= player2.getScore();
+bool operator<(const Player &player1, const Player &player2){
+    return player1.getScore() > player2.getScore();
 }
+
+bool operator<=(const Player &p1, const Player &p2) {
+    return p1.getScore()>=p2.getScore();
+}
+
+bool operator>(const Player &p1, const Player &p2) {
+    return p1.getScore()<p2.getScore();
+}
+
+bool operator>=(const Player &p1, const Player &p2) {
+    return p1.getScore()<=p2.getScore();
+}
+
+bool operator==(const Player &p1, const Player &p2) {
+    return p1.getScore() == p2.getScore();
+}
+
 
 
 

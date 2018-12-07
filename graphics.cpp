@@ -381,7 +381,7 @@ void sortStuff(){
     int score = 0;
 
 
-    ifstream file ("scores.csv");
+    ifstream file("../scores.csv");
     if (file.is_open()){
         while (file && file.peek() != EOF){
             getline(file, name, ',');
@@ -389,13 +389,15 @@ void sortStuff(){
 
             //cout << name << ":" << score << endl;
 
-            scores.emplace_back(score,name);
+            scores.push_back(Player(score,name));
 
         }
         file.close();
+    } else {
+        cout << "UNABLE TO OPEN FILE";
     }
 
-    sort(scores.begin(),scores.begin()+scores.size()-1);
+   sort(scores.begin(),scores.begin()+scores.size()-1);
 
 
 
@@ -452,7 +454,7 @@ void displayScreenEnd(){
 
     // IF end game score thing
     if(enterHighscoreName) {
-        string scoreText = "You got a new high score!";
+        string scoreText = "Enter Your name!";
         glColor3f(1,0,0);
         glRasterPos2f(width/2-100, height - 200);
         for (char i : scoreText) {
@@ -732,12 +734,13 @@ void resetGame() {
 
 void writeHighscore(string name, int score){
 
-    ofstream scores;
-    scores.open ("scores.csv", std::ios_base::app);
+    ofstream scoresInput ("../scores.csv",std::ios_base::app);
+    if (scoresInput.is_open()) {
+        scoresInput << name + "," + to_string(score) << endl;
+        scoresInput.close();
+    }
+    else cout << "Unable to open file";
 
-    scores << name + "," + to_string(score) << endl;
-
-    scores.close();
 }
 
 /**
