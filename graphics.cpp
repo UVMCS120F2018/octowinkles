@@ -4,8 +4,11 @@
 #include "engine/structs.h"
 #include "ink.h"
 #include "hank.h"
+#include "player.h"
 #include "periwinkle.h"
 #include <string.h>
+#include <fstream>
+
 using namespace colorGraphics;
 
 
@@ -31,6 +34,7 @@ Frownwinkle mamaWink(25, position2D::Vector2D{810+35, 150-35,0}, {.7,0.39,0.0});
 Awinkle babyWink(25, position2D::Vector2D{810+35+35, 150-35-35,0}, {.35,0.79,.45});
 vector<unique_ptr<Periwinkle>> periwinkles;
 vector<Ink> inks;
+vector<Player> scores;
 
 /* PARTICLE SYSTEMS */
 vector<ParticleSystem> particleSystems {
@@ -116,6 +120,9 @@ void kbd(unsigned char key, int x, int y) {
     }
     if (key == 32) {
         inks.emplace_back(hank.position);
+    }
+    if (key == 'q') {
+        displayScreenEnd();
     }
 
     glutPostRedisplay();
@@ -332,7 +339,62 @@ void displayScreenStart(){
 
 }
 
+
+void sortStuff(){
+    string name = "";
+    int score = 0;
+
+
+    ifstream file ("../HS.csv");
+    if (file.is_open()){
+        while (file && file.peek() != EOF){
+            getline(file, name, ',');
+            file >> score;
+
+            //cout << name << ":" << score << endl;
+
+            scores.emplace_back(score,name);
+
+        }
+        file.close();
+    }
+
+    sort(scores.begin(),scores.begin()+scores.size());
+
+
+//    for(auto )
+
+}
+
+void showHighScores(){
+
+    string hs = "High Scores:";
+    glColor3f(1,1,0);
+    glRasterPos2f(width/2-150, 300);
+    for (char i : hs) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+
+    for (int i = 0; i < 3 ; ++i) {
+        string name1 = scores[i].getName();
+        int score1 = scores[i].getScore();
+
+
+
+        string sc = name1 + ": " + to_string(score1);
+
+        glColor3f(1,1,0);
+        glRasterPos2f(width/2-150, 330+(i*20));
+        for (char j : sc) {
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, j);
+        }
+    }
+
+}
+
 void displayScreenEnd(){
+
+    showHighScores();
 
     string endGameText = "The evil Periwinkles invaded your home!";
     glColor3f(1,1,0);
@@ -459,8 +521,9 @@ void moveToEnd() {
     currentScreen = END;
     inPlay = false;
 
-    for (auto &psys : particleSystems)
-        psys.stop();
+    for (auto &psys : particleSystems) psys.stop();
+
+    sortStuff();
 }
 
 /**
@@ -601,6 +664,7 @@ void resetGame() {
     inks.clear();
     hank.setPosition(position2D::Vector2D{480, 660,0});
     inPlay = false;
+    scores.clear();
 
 }
 

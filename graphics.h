@@ -72,4 +72,8 @@ void spawnRow(int time);
 
 void resetGame();
 
+void showHighScores();
+
+void sortStuff();
+
 #endif /* graphics_h */
