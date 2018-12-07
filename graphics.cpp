@@ -152,6 +152,7 @@ void kbd(unsigned char key, int x, int y) {
         if(key == 13){
             writeHighscore(label,scoreCounter);
             sortStuff();
+            label.clear();
             enterHighscoreName = false;
         }
 
