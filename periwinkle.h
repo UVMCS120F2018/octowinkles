@@ -35,4 +35,10 @@ public:
     Frownwinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color);
     void draw() override;
 };
+
+class Awinkle : public Periwinkle{
+public:
+    Awinkle(int radius, position2D::Vector2D center, colorGraphics::RGBColor color);
+    void draw() override;
+};
 #endif //OCTOWINKLE_PERIWINKLE_H
