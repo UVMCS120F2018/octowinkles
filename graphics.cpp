@@ -17,7 +17,6 @@ enum screen { START, MAIN, END, INSTRUCTION};
 GLdouble width, height;
 int wd;
 screen currentScreen = START;
-int scoreCounter;
 
 /* BUTTONS */
 Button startButton(Quad({0.17,0.88,0.55}, {480, 340}, 300, 75), "PLAY");
@@ -27,12 +26,12 @@ Button backButton(Quad({0,0,1}, {65, 50}, 80, 50), "< BACK");
 
 
 /* ITEMS */
-Hank hank(position2D::Vector2D{480, 660,0});
+Hank hank(position2D::Vector2D{480, 660,0}); // This is the main screen hank during game play
 Hank papaHank(position2D::Vector2D{150, 150,0}); // This is start screen hank
 Smilewinkle papaWink(25, position2D::Vector2D{810, 150,0}, {.36,0.5,.26});// This is start screen wink
-Frownwinkle mamaWink(25, position2D::Vector2D{810+35, 150-35,0}, {.7,0.39,0.0});
-Awinkle babyWink(25, position2D::Vector2D{810+35+35, 150-35-35,0}, {.35,0.79,.45});
-Fish papafish(25, position2D::Vector2D{150, 300, 0}, {255, 102, 0});
+Frownwinkle mamaWink(25, position2D::Vector2D{810+35, 150-35,0}, {.7,0.39,0.0}); // This is start screen frown wink
+Awinkle babyWink(25, position2D::Vector2D{810+35+35, 150-35-35,0}, {.35,0.79,.45}); // This is start screen in awe wink
+Fish papafish(25, position2D::Vector2D{150, 550, 0}, {255, 102, 0}); // This is the main screen fish
 vector<unique_ptr<Periwinkle>> periwinkles;
 vector<Ink> inks;
 vector<Player> scores;
@@ -54,6 +53,8 @@ vector<double> xPlacements; // The periwinkle placements
 
 /* GLOBAL VARIABLES */
 bool inPlay = false;
+int scoreCounter;
+
 
 void init() {
     width = 960;

@@ -27,12 +27,13 @@ void Fish::draw() {
 
     glEnd();
 
+
+    // Tail
     glBegin(GL_TRIANGLES);
     glColor3f(getColor().r, getColor().g, getColor().b);
-
-    glVertex2f(cx - r+2, cy);
-    glVertex2f(cx - 2*r, cy-r);
-    glVertex2f(cx - 2*r, cy+r);
+    glVertex2f(cx - r/2, cy);
+    glVertex2f(cx - 1.5*r, cy-r);
+    glVertex2f(cx - 1.5*r, cy+r);
     glEnd();
 
 }
