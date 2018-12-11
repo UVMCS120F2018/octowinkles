@@ -6,6 +6,7 @@
 #include "hank.h"
 #include "player.h"
 #include "periwinkle.h"
+#include "fish.h"
 #include <string.h>
 #include <fstream>
 using namespace colorGraphics;
@@ -31,6 +32,7 @@ Hank papaHank(position2D::Vector2D{150, 150,0}); // This is start screen hank
 Smilewinkle papaWink(25, position2D::Vector2D{810, 150,0}, {.36,0.5,.26});// This is start screen wink
 Frownwinkle mamaWink(25, position2D::Vector2D{810+35, 150-35,0}, {.7,0.39,0.0});
 Awinkle babyWink(25, position2D::Vector2D{810+35+35, 150-35-35,0}, {.35,0.79,.45});
+Fish papafish(25, position2D::Vector2D{150, 300, 0}, {255, 102, 0});
 vector<unique_ptr<Periwinkle>> periwinkles;
 vector<Ink> inks;
 vector<Player> scores;
@@ -370,6 +372,7 @@ void displayScreenStart(){
     papaWink.draw();
     mamaWink.draw();
     babyWink.draw();
+    papafish.draw();
 
 }
 
