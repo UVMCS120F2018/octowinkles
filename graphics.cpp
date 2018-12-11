@@ -17,6 +17,7 @@ GLdouble width, height;
 int wd;
 screen currentScreen = START;
 int scoreCounter;
+int misses;
 
 /* BUTTONS */
 Button startButton(Quad({0.17,0.88,0.55}, {480, 340}, 300, 75), "PLAY");
@@ -407,8 +408,8 @@ void sortStuff(){
 void showHighScores(){
 
     string hs = "High Scores:";
-    glColor3f(1,1,0);
-    glRasterPos2f(width/2-150, 300);
+    glColor3f(.75,0,1);
+    glRasterPos2f(width/2-50, 400);
     for (char i : hs) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
@@ -421,8 +422,8 @@ void showHighScores(){
 
         string sc = name1 + ": " + to_string(score1);
 
-        glColor3f(1,1,0);
-        glRasterPos2f(width/2-150, 330+(i*20));
+        glColor3f(1,0,1);
+        glRasterPos2f(width/2-50, 430+(i*20));
         for (char j : sc) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, j);
         }
@@ -434,17 +435,23 @@ void displayScreenEnd(){
 
 
 
-    string endGameText = "The evil Periwinkles invaded your home!";
+    string endGameText = "The Periwinkles of Peril invaded your home!";
     glColor3f(1,1,0);
-    glRasterPos2f(width/2-150, 200);
+    glRasterPos2f(width/2-200, 200);
     for (char i : endGameText) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
 
     string scoreText = "You fended off " + to_string(scoreCounter) + ((scoreCounter==1)? " wink!":" winks!");
     glColor3f(1,1,0);
-    glRasterPos2f(width/2-100, 250);
+    glRasterPos2f(width/2-125, 250);
     for (char i : scoreText) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
+    }
+    string missText = "You missed " + to_string(misses) + ((misses==1)? " wink!":" winks!");
+    glColor3f(1,1,0);
+    glRasterPos2f(width/2-125, 275);
+    for (char i : missText) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, i);
     }
 
@@ -488,12 +495,13 @@ void displayScreenMain(){
 
 
 
-    for(int i = 0; i<inks.size() ; i++){
+    for(int i = 0; i<inks.size() ; ++i){
 
         inks[i].draw();
         inks[i].translate(position2D::Vector2D{0.0,-5.0}); // Move the ink
 
         if(inks[i].getCenter().y <= 0) { // Checks to see if the ink is on on the top of screen
+            ++misses;
             inks.erase(inks.begin() + i);
         }
 
@@ -725,6 +733,7 @@ void quitGame() {
 void resetGame() {
     periwinkles.clear();
     scoreCounter = 0;
+    misses = 0;
     inks.clear();
     hank.setPosition(position2D::Vector2D{480, 660,0});
     inPlay = false;
