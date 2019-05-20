@@ -6,12 +6,12 @@
 #define SPACE_STUFF_COLLIDER_H
 
 #include <string>
-#include <experimental/optional>
+//#include <experimental/optional>
 #include "entity.h"
 #include "structs.h"
 #include "circle.h"
 
-typedef std::experimental::optional<Entity*> optEnt;
+//typedef std::experimental::optional<Entity*> optEnt;
 class CircleCollider: public Circle{
 private:
     std::string colliderTag;

@@ -11,12 +11,12 @@
 #include "collider.h"
 
 #include <stdlib.h>
-#include <experimental/optional>
+//#include <experimental/optional>
 #include <vector>
 
 
 class PhysicsAspect: public Entity {
-    typedef std::experimental::optional<PhysicsAspect> optPhys;
+//    typedef std::experimental::optional<PhysicsAspect> optPhys;
 private:
     Entity *e;
     int mass;

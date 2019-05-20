@@ -6,7 +6,7 @@
 #include "physics_aspect.h"
 #include "particle_system.h"
 
-typedef std::experimental::optional<PhysicsAspect> optPhys;
+//typedef std::experimental::optional<PhysicsAspect> optPhys;
 
 std::vector<PhysicsAspect*> PhysicsAspect::worldPhysicsAspects;
 int PhysicsAspect::indices = 0;
